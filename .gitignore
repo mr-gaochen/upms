@@ -1,0 +1,17 @@
+# idea
+.idea/
+*.iml
+
+#maven
+[Tt]arget/
+
+#eclipse
+.setting/
+.settings/
+.project
+.classpath
+
+# Mac crap
+.DS_Store
+
+
