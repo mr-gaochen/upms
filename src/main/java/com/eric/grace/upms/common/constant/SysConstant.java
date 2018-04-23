@@ -16,6 +16,15 @@ public class SysConstant {
     public final static String DEFAULT_PASSWORD = "123456";
 
 
+    public enum UserStatus {
+        /**
+         * 冻结
+         */
+        FROZEN(-1),
+
+    }
+
+
     public enum MenuType {
         /**
          * 目录
