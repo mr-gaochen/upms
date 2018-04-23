@@ -11,7 +11,7 @@ public class SysConstant {
 
 
     public final static String DEFAULT_DEL_FLAG_NO = "N";
-    
+
     public final static String DEFAULT_PASSWORD = "123456";
 
     public enum MenuType {
