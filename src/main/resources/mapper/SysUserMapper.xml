@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.eric.grace.upms.mapper.SysUserMapper">
+<mapper namespace="com.eric.grace.upms.modules.sys.mapper.SysUserMapper">
 
     <!-- 根据用户名 获取用户基本信息 -->
-    <select id="selectUserByUsername" resultType="com.eric.grace.upms.entity.SysUser">
+    <select id="selectUserByUsername" resultType="com.eric.grace.upms.modules.sys.entity.SysUser">
         SELECT * from t_sys_user where username = #{value} and del_flag = 'N'
     </select>
 

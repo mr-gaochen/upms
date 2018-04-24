@@ -10,19 +10,15 @@ package com.eric.grace.upms.common.constant;
 public class SysConstant {
 
 
+    /** 超级管理员ID */
+    public static final String SUPER_ADMIN = "000001";
+
     public final static String DEFAULT_DEL_FLAG_NO = "N";
 
 
     public final static String DEFAULT_PASSWORD = "123456";
 
 
-    public enum UserStatus {
-        /**
-         * 冻结
-         */
-        FROZEN(-1),
-
-    }
 
 
     public enum MenuType {

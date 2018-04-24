@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.eric.grace.upms.mapper.SysUserRoleMapper">
+<mapper namespace="com.eric.grace.upms.modules.sys.mapper.SysUserRoleMapper">
 
     <!-- 根据用户ID 删除就角色 -->
     <delete id="deleteRolesByUserId">

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @since: 2018/4/18 下午5:04
  */
 @Configuration
-@MapperScan("com.eric.grace.upms.mapper")
+@MapperScan("com.eric.grace.upms.modules.sys.mapper")
 public class MybatisPlusConfig {
 
     /**

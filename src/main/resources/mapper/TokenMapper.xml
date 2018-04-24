@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.eric.grace.upms.mapper.TokenMapper">
+<mapper namespace="com.eric.grace.upms.modules.sys.mapper.TokenMapper">
 
     <!-- 根据用户id 获取token -->
-    <select id="selectByUserId" resultType="com.eric.grace.upms.entity.TokenEntity">
+    <select id="selectByUserId" resultType="com.eric.grace.upms.modules.sys.entity.TokenEntity">
         SELECT * from t_sys_token where user_id = #{value} and del_flag = 'N'
     </select>
 
