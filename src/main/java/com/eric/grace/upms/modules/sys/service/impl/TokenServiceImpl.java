@@ -1,4 +1,4 @@
-package com.eric.grace.upms.service.impl;
+package com.eric.grace.upms.modules.sys.service.impl;
 
 import com.eric.grace.dao.common.service.impl.CommonServiceImpl;
 import com.eric.grace.service.exception.enums.GraceExceptionEnum;
@@ -6,9 +6,9 @@ import com.eric.grace.service.result.ResponseVo;
 import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.common.utils.SpringContextHolder;
-import com.eric.grace.upms.entity.TokenEntity;
-import com.eric.grace.upms.mapper.TokenMapper;
-import com.eric.grace.upms.service.ITokenService;
+import com.eric.grace.upms.modules.sys.entity.TokenEntity;
+import com.eric.grace.upms.modules.sys.mapper.TokenMapper;
+import com.eric.grace.upms.modules.sys.service.ITokenService;
 import com.eric.grace.utils.common.RandomUtil;
 import org.springframework.stereotype.Service;
 

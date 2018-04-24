@@ -1,8 +1,8 @@
-package com.eric.grace.upms.service;
+package com.eric.grace.upms.modules.sys.service;
 
 import com.eric.grace.dao.common.service.ICommonService;
 import com.eric.grace.service.result.ResponseVo;
-import com.eric.grace.upms.entity.TokenEntity;
+import com.eric.grace.upms.modules.sys.entity.TokenEntity;
 
 /**
  * ITokenService:  生成token

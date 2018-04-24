@@ -1,9 +1,9 @@
-package com.eric.grace.upms.service.impl;
+package com.eric.grace.upms.modules.sys.service.impl;
 
 import com.eric.grace.dao.common.service.impl.CommonServiceImpl;
-import com.eric.grace.upms.entity.SysMenu;
-import com.eric.grace.upms.mapper.SysMenuMapper;
-import com.eric.grace.upms.service.ISysMenuService;
+import com.eric.grace.upms.modules.sys.entity.SysMenu;
+import com.eric.grace.upms.modules.sys.mapper.SysMenuMapper;
+import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import org.springframework.stereotype.Service;
 
 /**

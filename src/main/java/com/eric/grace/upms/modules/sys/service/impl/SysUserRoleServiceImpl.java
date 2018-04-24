@@ -1,11 +1,11 @@
-package com.eric.grace.upms.service.impl;
+package com.eric.grace.upms.modules.sys.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.eric.grace.dao.common.service.impl.CommonServiceImpl;
 import com.eric.grace.upms.common.utils.SpringContextHolder;
-import com.eric.grace.upms.entity.SysUserRole;
-import com.eric.grace.upms.mapper.SysUserRoleMapper;
-import com.eric.grace.upms.service.ISysUserRoleService;
+import com.eric.grace.upms.modules.sys.entity.SysUserRole;
+import com.eric.grace.upms.modules.sys.mapper.SysUserRoleMapper;
+import com.eric.grace.upms.modules.sys.service.ISysUserRoleService;
 import com.eric.grace.utils.collection.CollUtil;
 import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;

@@ -1,4 +1,4 @@
-package com.eric.grace.upms.service.impl;
+package com.eric.grace.upms.modules.sys.service.impl;
 
 import com.eric.grace.dao.common.service.impl.CommonServiceImpl;
 import com.eric.grace.service.exception.enums.GraceExceptionEnum;
@@ -7,13 +7,13 @@ import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.common.utils.PasswordHash;
 import com.eric.grace.upms.common.utils.SpringContextHolder;
-import com.eric.grace.upms.controller.dto.RequestPassword;
-import com.eric.grace.upms.controller.dto.RequestUser;
-import com.eric.grace.upms.entity.SysUser;
-import com.eric.grace.upms.mapper.SysUserMapper;
-import com.eric.grace.upms.service.ISysUserRoleService;
-import com.eric.grace.upms.service.ISysUserService;
-import com.eric.grace.upms.service.ITokenService;
+import com.eric.grace.upms.modules.sys.controller.dto.RequestPassword;
+import com.eric.grace.upms.modules.sys.controller.dto.RequestUser;
+import com.eric.grace.upms.modules.sys.entity.SysUser;
+import com.eric.grace.upms.modules.sys.mapper.SysUserMapper;
+import com.eric.grace.upms.modules.sys.service.ISysUserRoleService;
+import com.eric.grace.upms.modules.sys.service.ISysUserService;
+import com.eric.grace.upms.modules.sys.service.ITokenService;
 import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;
 import com.eric.grace.utils.crypto.digest.DigestUtil;
@@ -168,6 +168,13 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
         if(!checkPw(sysUser.getPassword(),password)){
             return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR.getCode(), "用户名或者密码不正确");
         }
+
+        //账号锁定
+        if(sysUser.getUserStatus() == 0){
+            return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR.getCode(), "账号已被锁定,请联系管理员");
+        }
+
+
         // 生成token
         return tokenService.createToken(sysUser.getId());
     }

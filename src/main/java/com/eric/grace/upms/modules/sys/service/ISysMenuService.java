@@ -1,7 +1,7 @@
-package com.eric.grace.upms.service;
+package com.eric.grace.upms.modules.sys.service;
 
 import com.eric.grace.dao.common.service.ICommonService;
-import com.eric.grace.upms.entity.SysMenu;
+import com.eric.grace.upms.modules.sys.entity.SysMenu;
 
 /**
  * ISysMenuService: 系统菜单业务接口

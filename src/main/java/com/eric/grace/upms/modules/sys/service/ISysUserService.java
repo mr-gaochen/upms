@@ -1,11 +1,11 @@
-package com.eric.grace.upms.service;
+package com.eric.grace.upms.modules.sys.service;
 
 
 import com.eric.grace.dao.common.service.ICommonService;
 import com.eric.grace.service.result.ResponseVo;
-import com.eric.grace.upms.controller.dto.RequestPassword;
-import com.eric.grace.upms.controller.dto.RequestUser;
-import com.eric.grace.upms.entity.SysUser;
+import com.eric.grace.upms.modules.sys.controller.dto.RequestPassword;
+import com.eric.grace.upms.modules.sys.controller.dto.RequestUser;
+import com.eric.grace.upms.modules.sys.entity.SysUser;
 
 /**
  * ISysUserService: 用户接口类

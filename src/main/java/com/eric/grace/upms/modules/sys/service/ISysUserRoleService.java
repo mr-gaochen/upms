@@ -1,7 +1,7 @@
-package com.eric.grace.upms.service;
+package com.eric.grace.upms.modules.sys.service;
 
 import com.eric.grace.dao.common.service.ICommonService;
-import com.eric.grace.upms.entity.SysUserRole;
+import com.eric.grace.upms.modules.sys.entity.SysUserRole;
 
 /**
  * ISysUserRoleService: 用户与角色对应关系
