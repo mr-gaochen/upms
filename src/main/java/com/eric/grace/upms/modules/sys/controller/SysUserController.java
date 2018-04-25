@@ -56,6 +56,7 @@ public class SysUserController extends AbstractController {
      * @return
      */
     @PostMapping("addUser")
+    @RequiresPermissions("sys:user:add")
     public ResponseVo createUser(@RequestBody RequestUser requestUser) {
 
         return sysUserService.saveEntity(requestUser, getUserId());

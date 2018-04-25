@@ -1,5 +1,6 @@
 package com.eric.grace.upms.config;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -15,6 +16,7 @@ import java.io.IOException;
  * @since: 2018/4/18 下午3:39
  */
 @Component
+@Order(-1)
 public class CrosFilter implements Filter {
 
 
@@ -29,7 +31,7 @@ public class CrosFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization,Content-Type, Accept, Token");
+        response.setHeader("Access-Control-Allow-Headers", "Origin,Access-Control-Allow-Origin,X-Requested-With, Authorization,Content-Type, Accept, Token");
         if ("OPTIONS".equals(method)) {
             response.setStatus(HttpServletResponse.SC_OK);
         }

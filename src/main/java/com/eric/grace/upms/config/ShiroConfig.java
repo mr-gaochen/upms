@@ -56,21 +56,19 @@ public class ShiroConfig {
         shiroFilter.setFilters(filters);
 
         Map<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/css/**", "anon");
+
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/druid/**", "anon");
         filterMap.put("/api/**", "anon");
         filterMap.put("/sys/captcha", "anon");
         filterMap.put("/sys/login", "anon");
-        filterMap.put("/**/*.css", "anon");
-        filterMap.put("/**/*.js", "anon");
-        filterMap.put("/**/*.html", "anon");
-        filterMap.put("/fonts/**", "anon");
-        filterMap.put("/plugins/**", "anon");
+        // 放心swagger
         filterMap.put("/swagger-ui.html", "anon");
         filterMap.put("/swagger-resources/**", "anon");
         filterMap.put("/v2/api-docs", "anon");
         filterMap.put("/favicon.ico", "anon");
+
+        // 除此之外都进入oauth2
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
         return shiroFilter;
