@@ -19,7 +19,7 @@ public interface ISysUserRoleService extends ICommonService<SysUserRole>{
      * @param userId
      * @param roleIds  角色数组
      */
-    void saveUserRoles(String userId,String roleIds);
+    void saveUserRoles(String userId,String roleIds,String updateUserId);
 
 
     /**

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class SysUserRoleServiceImpl extends CommonServiceImpl<SysUserRoleMapper,
      */
     @Override
     @Transactional
-    public void saveUserRoles(String userId, String roleIds) {
+    public void saveUserRoles(String userId, String roleIds,String updateUserId) {
         // role 不为空 且 用户ID 不为空 执行角色分配
         if (!StrUtil.isBlank(roleIds) && !StrUtil.isBlank(userId)) {
 
@@ -52,6 +53,10 @@ public class SysUserRoleServiceImpl extends CommonServiceImpl<SysUserRoleMapper,
                 sysUserRole.setId(RandomUtil.simpleUUID());
                 sysUserRole.setUserId(userId);
                 sysUserRole.setRoleId(roleId);
+                sysUserRole.setCreateUserId(updateUserId);
+                sysUserRole.setUpdateUserId(updateUserId);
+                sysUserRole.setCreateTime(new Date());
+                sysUserRole.setUpdateTime(new Date());
                 userRoles.add(sysUserRole);
             }
             logger.info(JSON.toJSONString(userRoles));
@@ -59,6 +64,7 @@ public class SysUserRoleServiceImpl extends CommonServiceImpl<SysUserRoleMapper,
 
         }
     }
+
 
     /**
      * 根据用户Id 获取用户的角色列表

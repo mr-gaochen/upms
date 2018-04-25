@@ -56,7 +56,7 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
      * @param requestUser
      * @return
      */
-    public ResponseVo saveEntity(RequestUser requestUser) {
+    public ResponseVo saveEntity(RequestUser requestUser,String createUserId) {
         if (null == requestUser || null == requestUser.getSysUser()) {
             return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
         }
@@ -74,6 +74,8 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
         }
 
         sysUser.setId(RandomUtil.simpleUUID());
+        sysUser.setCreateUserId(createUserId);
+        sysUser.setUpdateUserId(createUserId);
         sysUser.setCreateTime(new Date());
         sysUser.setUpdateTime(new Date());
         //初始化密码
@@ -84,7 +86,7 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
 
         super.insert(sysUser);
         if (null != requestUser.getRoles() && !StrUtil.isBlank(requestUser.getRoles())) {
-            sysUserRoleService.saveUserRoles(requestUser.getSysUser().getId(), requestUser.getRoles());
+            sysUserRoleService.saveUserRoles(requestUser.getSysUser().getId(), requestUser.getRoles(),createUserId);
         }
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
     }

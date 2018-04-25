@@ -14,6 +14,8 @@ import com.eric.grace.upms.modules.sys.entity.SysDept;
 import com.eric.grace.upms.modules.sys.entity.SysUser;
 import com.eric.grace.upms.modules.sys.service.ISysUserRoleService;
 import com.eric.grace.upms.modules.sys.service.ISysUserService;
+import com.eric.grace.utils.collection.CollUtil;
+import com.eric.grace.utils.common.ArrayUtil;
 import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;
 import io.swagger.annotations.Api;
@@ -35,7 +37,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/user/")
 @Api(value = "SysUser操作类", description = "User相关操作接口定义类")
-public class SysUserController  extends AbstractController{
+public class SysUserController extends AbstractController {
 
     private static Logger logger = LoggerFactory.getLogger(SysUserController.class);
 
@@ -55,7 +57,8 @@ public class SysUserController  extends AbstractController{
      */
     @PostMapping("addUser")
     public ResponseVo createUser(@RequestBody RequestUser requestUser) {
-        return sysUserService.saveEntity(requestUser);
+
+        return sysUserService.saveEntity(requestUser, getUserId());
     }
 
 
@@ -79,11 +82,11 @@ public class SysUserController  extends AbstractController{
             //获取用户所属的角色列表
             List<String> roleIdList = sysUserRoleService.queryRoleIdList(userId);
             sysUser.setRoleIdList(roleIdList);
-            return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,sysUser);
+            return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
         }
 
         if (!StrUtil.isBlank(username)) {
-            SysUser sysUser = sysUserService.selectUserByUsername(username)
+            SysUser sysUser = sysUserService.selectUserByUsername(username);
             //获取用户所属的角色列表
             List<String> roleIdList = sysUserRoleService.queryRoleIdList(userId);
             sysUser.setRoleIdList(roleIdList);
@@ -104,7 +107,7 @@ public class SysUserController  extends AbstractController{
         if (StrUtil.isBlank(userId) && StrUtil.isBlank(roles)) {
             return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
         }
-        sysUserRoleService.saveUserRoles(userId, roles);
+        sysUserRoleService.saveUserRoles(userId, roles, getUserId());
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
     }
 
@@ -134,14 +137,14 @@ public class SysUserController  extends AbstractController{
 
     /**
      * 更新密码
+     *
      * @param requestPassword
      * @return
      */
     @PostMapping(value = "editPw")
-    public ResponseVo editPw(@RequestBody RequestPassword requestPassword){
+    public ResponseVo editPw(@RequestBody RequestPassword requestPassword) {
         return sysUserService.EditPassword(requestPassword);
     }
-
 
 
     /**
@@ -188,6 +191,7 @@ public class SysUserController  extends AbstractController{
 
     /**
      * 获取当期用户信息
+     *
      * @return
      */
     @PostMapping("info")
@@ -196,5 +200,28 @@ public class SysUserController  extends AbstractController{
 
     }
 
+
+    /**
+     * 删除用户
+     */
+    @DeleteMapping("/delete")
+    @RequiresPermissions("sys:user:delete")
+    public ResponseVo delete(@RequestBody String userIds) {
+        
+        if (StrUtil.isBlank(userIds)) {
+            return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
+        }
+
+
+        String[] ids = userIds.split(",");
+        if (ArrayUtil.contains(ids, getUserId())) {
+            return ResultUtil.error(GraceExceptionEnum.BUSINESS_FAILE.getCode(), "当前用户不能删除");
+        }
+
+        List<String> colList = CollUtil.newArrayList(ids);
+        sysUserService.deleteBatchIds(colList);
+
+
+    }
 
 }

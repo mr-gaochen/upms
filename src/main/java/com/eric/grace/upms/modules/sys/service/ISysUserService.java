@@ -28,7 +28,7 @@ public interface ISysUserService extends ICommonService<SysUser> {
      * @param requestUser
      * @return
      */
-    ResponseVo saveEntity(RequestUser requestUser);
+    ResponseVo saveEntity(RequestUser requestUser,String createUserId);
 
 
     /**
