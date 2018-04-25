@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/sys/dept")
 public class SysDeptController extends AbstractController {
-    
+
     @Autowired
     private ISysDeptService deptService;
 

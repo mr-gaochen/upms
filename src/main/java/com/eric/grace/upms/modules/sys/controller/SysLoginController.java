@@ -1,6 +1,8 @@
 package com.eric.grace.upms.modules.sys.controller;
 
+import com.eric.grace.service.exception.enums.GraceExceptionEnum;
 import com.eric.grace.service.result.ResponseVo;
+import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.upms.common.utils.ShiroUtils;
 import com.eric.grace.upms.modules.sys.controller.dto.LoginDto;
 import com.eric.grace.upms.modules.sys.service.ISysUserService;
@@ -37,6 +39,12 @@ public class SysLoginController {
 
     @PostMapping("login")
     public ResponseVo login(@RequestBody LoginDto loginDto) {
+
+        String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+        if(!loginDto.getCaptcha().equalsIgnoreCase(kaptcha)){
+            return ResultUtil.error(GraceExceptionEnum.BUSINESS_FAILE.getCode(),"验证码不正确");
+        }
+
         return sysUserService.login(loginDto.getUsername(), loginDto.getPassword());
     }
 

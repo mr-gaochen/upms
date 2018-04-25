@@ -12,6 +12,8 @@ public class LoginDto {
 
     private String password;
 
+    private String captcha;
+
 
     public String getUsername() {
         return username;
@@ -27,5 +29,13 @@ public class LoginDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
     }
 }
