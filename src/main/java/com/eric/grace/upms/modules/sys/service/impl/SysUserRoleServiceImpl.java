@@ -1,6 +1,7 @@
 package com.eric.grace.upms.modules.sys.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.eric.grace.dao.common.service.impl.CommonServiceImpl;
 import com.eric.grace.upms.common.utils.SpringContextHolder;
 import com.eric.grace.upms.modules.sys.entity.SysUserRole;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SysUserRoleServiceImpl: 用户与角色对应关系
@@ -56,6 +58,16 @@ public class SysUserRoleServiceImpl extends CommonServiceImpl<SysUserRoleMapper,
             super.insertBatch(userRoles);
 
         }
+    }
+
+    /**
+     * 根据用户Id 获取用户的角色列表
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<String> queryRoleIdList(String userId) {
+        return SpringContextHolder.getBean(SysUserRoleMapper.class).queryRoleIdList(userId);
     }
 
 

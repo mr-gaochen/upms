@@ -10,18 +10,21 @@ import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.service.util.StringTools;
 import com.eric.grace.upms.modules.sys.controller.dto.RequestPassword;
 import com.eric.grace.upms.modules.sys.controller.dto.RequestUser;
+import com.eric.grace.upms.modules.sys.entity.SysDept;
 import com.eric.grace.upms.modules.sys.entity.SysUser;
 import com.eric.grace.upms.modules.sys.service.ISysUserRoleService;
 import com.eric.grace.upms.modules.sys.service.ISysUserService;
 import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;
 import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * SysUserController: 系统用户类
@@ -30,9 +33,9 @@ import java.lang.reflect.Field;
  * @since: 2018/4/18 下午3:10
  */
 @RestController
-@RequestMapping("api/sys/permission/user/")
+@RequestMapping("/sys/user/")
 @Api(value = "SysUser操作类", description = "User相关操作接口定义类")
-public class SysUserController {
+public class SysUserController  extends AbstractController{
 
     private static Logger logger = LoggerFactory.getLogger(SysUserController.class);
 
@@ -71,11 +74,20 @@ public class SysUserController {
         }
 
         if (!StrUtil.isBlank(userId)) {
-            return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUserService.selectById(userId));
+
+            SysUser sysUser = sysUserService.selectById(userId);
+            //获取用户所属的角色列表
+            List<String> roleIdList = sysUserRoleService.queryRoleIdList(userId);
+            sysUser.setRoleIdList(roleIdList);
+            return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,sysUser);
         }
 
         if (!StrUtil.isBlank(username)) {
-            return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUserService.selectUserByUsername(username));
+            SysUser sysUser = sysUserService.selectUserByUsername(username)
+            //获取用户所属的角色列表
+            List<String> roleIdList = sysUserRoleService.queryRoleIdList(userId);
+            sysUser.setRoleIdList(roleIdList);
+            return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
         }
 
         return null;
@@ -139,6 +151,7 @@ public class SysUserController {
      * @return
      */
     @PostMapping("list")
+    @RequiresPermissions("sys:user:list")
     public ResponseVo getAllUsersPages(@RequestBody FrontPage<SysUser> spage) {
         Page<SysUser> page = new Page<SysUser>(spage.getCurentPage(), spage.getPageRowNum());
         if (null != spage.getSort()) {
@@ -173,13 +186,13 @@ public class SysUserController {
     }
 
 
-
-    @PostMapping("current")
+    /**
+     * 获取当期用户信息
+     * @return
+     */
+    @PostMapping("info")
     public ResponseVo getCurrent() {
-        SysUser sysUser = new SysUser();
-        sysUser.setId(RandomUtil.simpleUUID());
-        sysUser.setUsername("admin");
-        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, getUser());
 
     }
 

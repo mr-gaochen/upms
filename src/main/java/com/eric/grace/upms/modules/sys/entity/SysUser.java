@@ -6,6 +6,8 @@ import com.eric.grace.dao.common.model.BaseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 /**
  * SysUser: 系统用户表
  *
@@ -65,6 +67,14 @@ public class SysUser extends BaseModel<SysUser> {
     @ApiModelProperty(value = "用户状态")
     @TableField("user_status")
     private Integer userStatus;
+
+
+
+    /**
+     * 角色ID列表
+     */
+    @TableField(exist = false)
+    private List<String> roleIdList;
 
 
     public String getUsername() {
@@ -154,6 +164,15 @@ public class SysUser extends BaseModel<SysUser> {
 
     public void setUserStatus(Integer userStatus) {
         this.userStatus = userStatus;
+    }
+
+
+    public List<String> getRoleIdList() {
+        return roleIdList;
+    }
+
+    public void setRoleIdList(List<String> roleIdList) {
+        this.roleIdList = roleIdList;
     }
 }
 

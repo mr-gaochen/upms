@@ -3,6 +3,8 @@ package com.eric.grace.upms.modules.sys.service;
 import com.eric.grace.dao.common.service.ICommonService;
 import com.eric.grace.upms.modules.sys.entity.SysUserRole;
 
+import java.util.List;
+
 /**
  * ISysUserRoleService: 用户与角色对应关系
  *
@@ -20,5 +22,10 @@ public interface ISysUserRoleService extends ICommonService<SysUserRole>{
     void saveUserRoles(String userId,String roleIds);
 
 
-
+    /**
+     * 根据用户ID 获取用户的角色列表
+     * @param userId
+     * @return
+     */
+    List<String> queryRoleIdList(String userId);
 }

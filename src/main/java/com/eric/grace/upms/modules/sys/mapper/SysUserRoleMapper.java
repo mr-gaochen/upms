@@ -4,6 +4,8 @@ import com.eric.grace.dao.common.dao.CommonDao;
 import com.eric.grace.upms.modules.sys.entity.SysUserRole;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * SysUserRoleMapper: 用户与角色对应关系
  *
@@ -20,4 +22,10 @@ public interface SysUserRoleMapper extends CommonDao<SysUserRole> {
     void deleteRolesByUserId(String userId);
 
 
+    /**
+     * 根据用户ID获取角色ID
+     * @param userId
+     * @return
+     */
+    List<String> queryRoleIdList(String userId);
 }
