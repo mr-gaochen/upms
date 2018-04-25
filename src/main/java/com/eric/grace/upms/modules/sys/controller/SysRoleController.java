@@ -14,6 +14,7 @@ import com.eric.grace.upms.modules.sys.entity.SysRole;
 import com.eric.grace.upms.modules.sys.service.ISysDeptService;
 import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import com.eric.grace.upms.modules.sys.service.ISysRoleService;
+import com.eric.grace.utils.collection.CollUtil;
 import com.eric.grace.utils.common.StrUtil;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -53,7 +54,35 @@ public class SysRoleController extends AbstractController {
     @RequiresPermissions("sys:role:save")
     public ResponseVo save(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
-        return sysRoleService.save(role);
+        return sysRoleService.save(role, getUserId());
+    }
+
+
+    /**
+     * 修改角色
+     */
+    @PutMapping("/update")
+    @RequiresPermissions("sys:role:update")
+    public ResponseVo update(@RequestBody SysRole role) {
+        ValidatorUtils.validateEntity(role);
+        sysRoleService.updateById(role);
+        return ResultUtil.error(GraceExceptionEnum.BUSIONESS_SUCCESS);
+    }
+
+
+    /**
+     * 删除角色
+     */
+    @DeleteMapping("/delete")
+    @RequiresPermissions("sys:role:delete")
+    public ResponseVo delete(@RequestBody String roleIds) {
+
+        if (StrUtil.isBlank(roleIds)) {
+            return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
+        }
+        sysRoleService.deleteBatchIds(CollUtil.newArrayList(roleIds.split(",")));
+
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
     }
 
 
@@ -66,7 +95,7 @@ public class SysRoleController extends AbstractController {
      */
     @GetMapping("/info/{roleId}")
     @RequiresPermissions("sys:role:info")
-    public ResponseVo info(@PathVariable("roleId") String roleId){
+    public ResponseVo info(@PathVariable("roleId") String roleId) {
         SysRole role = sysRoleService.selectById(roleId);
 //        //查询角色对应的菜单
 //        List<String> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
@@ -78,7 +107,6 @@ public class SysRoleController extends AbstractController {
 
         return null;
     }
-
 
 
     /***

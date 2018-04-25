@@ -16,5 +16,5 @@ public interface ISysRoleService extends ICommonService<SysRole> {
      * @param role
      * @return
      */
-    ResponseVo save(SysRole role);
+    ResponseVo save(SysRole role,String createId);
 }

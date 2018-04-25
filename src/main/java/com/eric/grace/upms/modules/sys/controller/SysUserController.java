@@ -207,7 +207,7 @@ public class SysUserController extends AbstractController {
     @DeleteMapping("/delete")
     @RequiresPermissions("sys:user:delete")
     public ResponseVo delete(@RequestBody String userIds) {
-        
+
         if (StrUtil.isBlank(userIds)) {
             return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
         }
@@ -221,7 +221,7 @@ public class SysUserController extends AbstractController {
         List<String> colList = CollUtil.newArrayList(ids);
         sysUserService.deleteBatchIds(colList);
 
-
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
     }
 
 }
