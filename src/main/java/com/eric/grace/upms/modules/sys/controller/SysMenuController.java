@@ -1,8 +1,12 @@
 package com.eric.grace.upms.modules.sys.controller;
 
+import com.eric.grace.service.result.ResponseVo;
+import com.eric.grace.upms.modules.sys.entity.SysMenu;
 import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import io.swagger.annotations.Api;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,13 +17,41 @@ import org.springframework.web.bind.annotation.RestController;
  * @since: 2018/4/18 下午3:48
  */
 @RestController
-@RequestMapping("api/sys/permission/menu/")
+@RequestMapping("sys/menu/")
 @Api(value = "SysMenu操作类", description = "Menu相关操作接口定义类")
-public class SysMenuController { //extends BaseController<ISysMenuService, SysMenu>
+public class SysMenuController {
 
     @Autowired
     private ISysMenuService sysMenuService;
 
 
+    /***
+     * 保存菜单
+     * @author Mr.Eric
+     * @date 2018/4/24 下午2:28
+     * @param menu
+     * @return R
+     */
+    @RequestMapping("/save")
+    @RequiresPermissions("sys:menu:save")
+    public ResponseVo save(@RequestBody SysMenu menu) {
+        return sysMenuService.save(menu);
+    }
+
+
+
+
+    /***
+     * 修改菜单
+     * @author Mr.Eric
+     * @date 2018/4/24 下午2:45
+     * @param menu
+     * @return R
+     */
+    @RequestMapping("/update")
+    @RequiresPermissions("sys:menu:update")
+    public ResponseVo update(@RequestBody SysMenu menu){
+        return sysMenuService.updateEntity(menu);
+    }
 
 }

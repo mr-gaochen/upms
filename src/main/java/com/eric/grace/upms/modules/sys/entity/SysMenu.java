@@ -25,7 +25,7 @@ public class SysMenu extends BaseModel<SysMenu> {
     @TableField("meun_href")
     private String menuHref;
 
-    @ApiModelProperty(value = "菜单类型")
+    @ApiModelProperty(value = "菜单类型  0：目录   1：菜单   2：按钮 ")
     @TableField("meun_type")
     private String menuType;
 

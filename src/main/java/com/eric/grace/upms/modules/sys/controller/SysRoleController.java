@@ -10,20 +10,21 @@ import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.service.util.StringTools;
 import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.common.utils.ValidatorUtils;
-import com.eric.grace.upms.modules.sys.entity.SysMenu;
 import com.eric.grace.upms.modules.sys.entity.SysRole;
-import com.eric.grace.upms.modules.sys.entity.SysUser;
+import com.eric.grace.upms.modules.sys.service.ISysDeptService;
+import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import com.eric.grace.upms.modules.sys.service.ISysRoleService;
 import com.eric.grace.utils.common.StrUtil;
-import com.eric.grace.utils.io.watch.Watcher;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * SysRoleController: 系统角色控制成
@@ -38,12 +39,13 @@ public class SysRoleController extends AbstractController {
 
     @Autowired
     private ISysRoleService sysRoleService;
+    @Autowired
+    private ISysMenuService menuService;
+    @Autowired
+    private ISysDeptService deptService;
 
 
-
-
-
-    /***   
+    /***
      * 创建角色
      * @author Mr.Eric
      * @date 2018/4/24 下午1:15
@@ -52,12 +54,33 @@ public class SysRoleController extends AbstractController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("sys:role:save")
-    public ResponseVo save(@RequestBody SysRole role){
+    public ResponseVo save(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
         return sysRoleService.save(role);
     }
 
 
+    /***
+     * 角色信息
+     * @author Mr.Eric
+     * @date 2018/4/24 下午2:25
+     * @param roleId
+     * @return com.eric.grace.service.result.ResponseVo
+     */
+    @RequestMapping("/info/{roleId}")
+    @RequiresPermissions("sys:role:info")
+    public ResponseVo info(@PathVariable("roleId") String roleId){
+        SysRole role = sysRoleService.selectById(roleId);
+//        //查询角色对应的菜单
+//        List<String> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
+//        role.setMenuIdList(menuIdList);
+//
+//        //查询角色对应的部门
+//        List<Long> deptIdList = sysRoleDeptService.queryDeptIdList(roleId);
+//        role.setDeptIdList(deptIdList);
+
+        return null;
+    }
 
 
 
