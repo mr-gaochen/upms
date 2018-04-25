@@ -1,6 +1,7 @@
 package com.eric.grace.upms.test;
 
 import com.eric.grace.upms.modules.sys.service.ISysUserRoleService;
+import com.eric.grace.utils.crypto.digest.DigestUtil;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,12 @@ public class BaseTests {
 
     @Autowired
     private ISysUserRoleService sysUserRoleService;
+
+
+    public static void main(String[] args){
+
+        System.out.println(DigestUtil.md5("admin"));
+    }
 
 
 
