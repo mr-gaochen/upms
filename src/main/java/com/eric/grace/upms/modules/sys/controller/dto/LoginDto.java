@@ -14,6 +14,8 @@ public class LoginDto {
 
     private String captcha;
 
+    private String key;
+
 
     public String getUsername() {
         return username;
@@ -37,5 +39,13 @@ public class LoginDto {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
