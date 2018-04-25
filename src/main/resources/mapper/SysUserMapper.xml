@@ -8,4 +8,13 @@
         SELECT * from t_sys_user where username = #{value} and del_flag = 'N'
     </select>
 
+
+    <!-- 查询用户的所有权限 -->
+    <select id="queryAllPerms" resultType="string">
+        select m.menu_perms from t_sys_user_role ur
+        LEFT JOIN t_sys_role_menu rm on ur.role_id = rm.role_id
+        LEFT JOIN t_sys_menu m on rm.menu_id = m.id
+        where ur.user_id = #{userId}
+    </select>
+
 </mapper>

@@ -4,6 +4,8 @@ import com.eric.grace.dao.common.dao.CommonDao;
 import com.eric.grace.upms.modules.sys.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * SysUserMapper:
  *
@@ -19,4 +21,12 @@ public interface SysUserMapper extends CommonDao<SysUser> {
      * @return
      */
     SysUser selectUserByUsername(String username);
+
+
+    /**
+     * 根据用户ID获取所有权限
+     * @param userId
+     * @return
+     */
+    List<String> queryAllPerms(String userId);
 }

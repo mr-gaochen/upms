@@ -20,4 +20,11 @@ public interface TokenMapper extends CommonDao<TokenEntity> {
      * @return
      */
     TokenEntity selectByUserId(String userId);
+
+    /**
+     * 根据token获取token
+     * @param token
+     * @return
+     */
+    TokenEntity queryByToken(String token);
 }

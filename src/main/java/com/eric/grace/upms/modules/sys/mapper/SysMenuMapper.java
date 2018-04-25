@@ -4,6 +4,8 @@ import com.eric.grace.dao.common.dao.CommonDao;
 import com.eric.grace.upms.modules.sys.entity.SysMenu;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * SysMenuMapper: 系统菜单
  *
@@ -12,4 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysMenuMapper extends CommonDao<SysMenu> {
+
+    // 获取所有菜单
+    List<SysMenu> queryList();
 }

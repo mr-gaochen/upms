@@ -8,4 +8,11 @@
         SELECT * from t_sys_token where user_id = #{value} and del_flag = 'N'
     </select>
 
+
+    <!-- 根据token查询 -->
+    <select id="queryByToken" resultType="com.eric.grace.upms.modules.sys.entity.TokenEntity">
+        select * from t_sys_token where token = #{value} and del_flag = 'N'
+    </select>
+
+
 </mapper>
