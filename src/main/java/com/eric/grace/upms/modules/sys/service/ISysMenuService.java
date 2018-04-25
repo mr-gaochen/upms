@@ -25,4 +25,11 @@ public interface ISysMenuService extends ICommonService<SysMenu> {
      * @return
      */
     ResponseVo updateEntity(SysMenu menu);
+
+    /**
+     * 删除菜单
+     * @param menuId
+     * @return
+     */
+    ResponseVo deleteByMenuId(String menuId);
 }

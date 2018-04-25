@@ -18,10 +18,7 @@ import com.eric.grace.utils.common.StrUtil;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -52,7 +49,7 @@ public class SysRoleController extends AbstractController {
      * @param role
      * @return com.eric.grace.service.result.ResponseVo
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @RequiresPermissions("sys:role:save")
     public ResponseVo save(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
@@ -67,7 +64,7 @@ public class SysRoleController extends AbstractController {
      * @param roleId
      * @return com.eric.grace.service.result.ResponseVo
      */
-    @RequestMapping("/info/{roleId}")
+    @GetMapping("/info/{roleId}")
     @RequiresPermissions("sys:role:info")
     public ResponseVo info(@PathVariable("roleId") String roleId){
         SysRole role = sysRoleService.selectById(roleId);
@@ -91,7 +88,7 @@ public class SysRoleController extends AbstractController {
      * @param spage
      * @return com.eric.grace.service.result.ResponseVo
      */
-    @RequestMapping("/list")
+    @PostMapping("/list")
     @RequiresPermissions("sys:role:list")
     public ResponseVo list(@RequestBody FrontPage<SysRole> spage) {
         Page<SysRole> page = new Page<SysRole>(spage.getCurentPage(), spage.getPageRowNum());

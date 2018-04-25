@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * SysMenuServiceImpl: 系统菜单实现类
@@ -25,6 +26,13 @@ import java.util.Date;
 @Service
 public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
 
+
+    /**
+     * 创建菜单
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public ResponseVo save(SysMenu menu) {
         ResponseVo responseVo = verifyForm(menu);
@@ -39,19 +47,41 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
         return responseVo;
     }
 
+    /**
+     * 更新菜单
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public ResponseVo updateEntity(SysMenu menu) {
         ResponseVo responseVo = verifyForm(menu);
-
-
-        return null;
+        if (null == responseVo) {
+            menu.setUpdateTime(new Date());
+            super.updateById(menu);
+            responseVo = ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
+        }
+        return responseVo;
     }
 
-
-
-
-
-
+    /**
+     * 删除菜单
+     *
+     * @param menuId
+     * @return
+     */
+    @Override
+    public ResponseVo deleteByMenuId(String menuId) {
+        //判断是否有子菜单或按钮
+        EntityWrapper wrapper = new EntityWrapper();
+        wrapper.eq("parent_id", menuId);
+        List<SysMenu> menuList = super.selectList(wrapper);
+        if (menuList.size() > 0) {
+            return ResultUtil.error(GraceExceptionEnum.BUSINESS_FAILE.getCode(), "请先删除子菜单或者目录");
+        }
+        super.deleteById(menuId);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
+    }
 
 
     // 验证菜单

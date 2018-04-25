@@ -6,9 +6,8 @@ import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 /**
  * SysMenuController: 系统菜单接口层
@@ -25,6 +24,14 @@ public class SysMenuController {
     private ISysMenuService sysMenuService;
 
 
+
+
+
+
+
+
+
+
     /***
      * 保存菜单
      * @author Mr.Eric
@@ -32,7 +39,7 @@ public class SysMenuController {
      * @param menu
      * @return R
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @RequiresPermissions("sys:menu:save")
     public ResponseVo save(@RequestBody SysMenu menu) {
         return sysMenuService.save(menu);
@@ -48,10 +55,24 @@ public class SysMenuController {
      * @param menu
      * @return R
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @RequiresPermissions("sys:menu:update")
     public ResponseVo update(@RequestBody SysMenu menu){
         return sysMenuService.updateEntity(menu);
     }
+
+
+    /**
+     *  删除菜单
+     * @param menuId
+     * @return
+     */
+    @DeleteMapping("/delete")
+    @RequiresPermissions("sys:menu:delete")
+    public ResponseVo delete(String menuId){
+        return sysMenuService.deleteByMenuId(menuId);
+    }
+
+
 
 }
