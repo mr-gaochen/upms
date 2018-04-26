@@ -39,6 +39,6 @@ public class SysRoleServiceImpl extends CommonServiceImpl<SysRoleMapper, SysRole
         role.setCreateUserId(createId);
         role.setUpdateTime(new Date());
         super.insert(role);
-        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,role);
     }
 }

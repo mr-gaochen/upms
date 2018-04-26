@@ -51,7 +51,7 @@ public class SysRoleController extends AbstractController {
      * @return com.eric.grace.service.result.ResponseVo
      */
     @PostMapping("/save")
-    @RequiresPermissions("sys:role:save")
+  //  @RequiresPermissions("sys:role:save")
     public ResponseVo save(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
         return sysRoleService.save(role, getUserId());
@@ -61,12 +61,12 @@ public class SysRoleController extends AbstractController {
     /**
      * 修改角色
      */
-    @PutMapping("/update")
-    @RequiresPermissions("sys:role:update")
+    @PostMapping("/update")
+   // @RequiresPermissions("sys:role:update")
     public ResponseVo update(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
         sysRoleService.updateById(role);
-        return ResultUtil.error(GraceExceptionEnum.BUSIONESS_SUCCESS);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,role);
     }
 
 
@@ -117,7 +117,7 @@ public class SysRoleController extends AbstractController {
      * @return com.eric.grace.service.result.ResponseVo
      */
     @PostMapping("/list")
-    @RequiresPermissions("sys:role:list")
+//    @RequiresPermissions("sys:role:list")
     public ResponseVo list(@RequestBody FrontPage<SysRole> spage) {
         Page<SysRole> page = new Page<SysRole>(spage.getCurentPage(), spage.getPageRowNum());
         if (null != spage.getSort()) {
