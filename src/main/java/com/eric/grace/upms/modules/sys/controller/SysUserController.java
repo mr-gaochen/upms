@@ -56,7 +56,7 @@ public class SysUserController extends AbstractController {
      * @return
      */
     @PostMapping("addUser")
-    @RequiresPermissions("sys:user:add")
+    // @RequiresPermissions("sys:user:add")
     public ResponseVo createUser(@RequestBody RequestUser requestUser) {
 
         return sysUserService.saveEntity(requestUser, getUserId());
@@ -155,7 +155,7 @@ public class SysUserController extends AbstractController {
      * @return
      */
     @PostMapping("list")
-    @RequiresPermissions("sys:user:list")
+   // @RequiresPermissions("sys:user:list")
     public ResponseVo getAllUsersPages(@RequestBody FrontPage<SysUser> spage) {
         Page<SysUser> page = new Page<SysUser>(spage.getCurentPage(), spage.getPageRowNum());
         if (null != spage.getSort()) {
@@ -206,7 +206,7 @@ public class SysUserController extends AbstractController {
      * 删除用户
      */
     @DeleteMapping("/delete")
-    @RequiresPermissions("sys:user:delete")
+   // @RequiresPermissions("sys:user:delete")
     public ResponseVo delete(@RequestBody String userIds) {
 
         if (StrUtil.isBlank(userIds)) {

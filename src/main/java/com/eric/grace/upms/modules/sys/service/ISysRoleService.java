@@ -17,4 +17,12 @@ public interface ISysRoleService extends ICommonService<SysRole> {
      * @return
      */
     ResponseVo save(SysRole role,String createId);
+
+    /**
+     * 批量删除角色
+     * @param roleId
+     */
+    String[] deleteBatch(String roleId);
+
+    SysRole selectByRoleCode(String roleCode);
 }

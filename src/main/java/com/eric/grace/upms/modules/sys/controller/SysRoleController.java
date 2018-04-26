@@ -10,6 +10,7 @@ import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.service.util.StringTools;
 import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.common.utils.ValidatorUtils;
+import com.eric.grace.upms.modules.sys.entity.SysDept;
 import com.eric.grace.upms.modules.sys.entity.SysRole;
 import com.eric.grace.upms.modules.sys.service.ISysDeptService;
 import com.eric.grace.upms.modules.sys.service.ISysMenuService;
@@ -51,7 +52,7 @@ public class SysRoleController extends AbstractController {
      * @return com.eric.grace.service.result.ResponseVo
      */
     @PostMapping("/save")
-  //  @RequiresPermissions("sys:role:save")
+    //  @RequiresPermissions("sys:role:save")
     public ResponseVo save(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
         return sysRoleService.save(role, getUserId());
@@ -62,27 +63,31 @@ public class SysRoleController extends AbstractController {
      * 修改角色
      */
     @PostMapping("/update")
-   // @RequiresPermissions("sys:role:update")
+    // @RequiresPermissions("sys:role:update")
     public ResponseVo update(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
         sysRoleService.updateById(role);
-        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,role);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, role);
     }
 
 
     /**
      * 删除角色
      */
-    @DeleteMapping("/delete")
-    @RequiresPermissions("sys:role:delete")
-    public ResponseVo delete(@RequestBody String roleIds) {
+    @DeleteMapping("/delete/{ids}")
+    //@RequiresPermissions("sys:role:delete")
+    public ResponseVo delete(@PathVariable String ids) {
 
-        if (StrUtil.isBlank(roleIds)) {
+        if (StrUtil.isBlank(ids)) {
             return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
         }
-        sysRoleService.deleteBatchIds(CollUtil.newArrayList(roleIds.split(",")));
 
-        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
+        if (ids.equals("0")) {
+            return ResultUtil.error(GraceExceptionEnum.BUSINESS_FAILE.getCode(),"超级管理员不能删除");
+        }
+
+        String[] idArray = sysRoleService.deleteBatch(ids);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, idArray);
     }
 
 
@@ -106,6 +111,18 @@ public class SysRoleController extends AbstractController {
 //        role.setDeptIdList(deptIdList);
 
         return null;
+    }
+
+
+    @GetMapping("/info/codeExists")
+    public ResponseVo<Boolean> findRoleByCode(String roleCode) {
+        SysRole sysRole = sysRoleService.selectByRoleCode(roleCode);
+        if (null == sysRole) {
+            return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, true);
+        } else {
+            return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, false);
+        }
+
     }
 
 

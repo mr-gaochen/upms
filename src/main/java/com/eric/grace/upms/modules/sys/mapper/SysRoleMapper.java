@@ -3,6 +3,7 @@ package com.eric.grace.upms.modules.sys.mapper;
 import com.eric.grace.dao.common.dao.CommonDao;
 import com.eric.grace.upms.modules.sys.entity.SysRole;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * SysRoleMapper: 系统角色Mapper
@@ -12,4 +13,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysRoleMapper extends CommonDao<SysRole> {
+    /**
+     * 批量删除角色
+     * @param id
+     */
+    void deleteBatch( String[] id);
 }
