@@ -17,4 +17,21 @@
         where ur.user_id = #{userId}
     </select>
 
+
+    <!-- 批量删除用户 -->
+    <delete id="deleteBatch">
+
+        delete from t_sys_user where id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        ;
+        delete from t_sys_user_role where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        ;
+
+    </delete>
+
 </mapper>

@@ -29,4 +29,10 @@ public interface SysUserMapper extends CommonDao<SysUser> {
      * @return
      */
     List<String> queryAllPerms(String userId);
+
+    /**
+     * 批量删除用户
+     * @param userId
+     */
+    void deleteBatch(String[] userId);
 }

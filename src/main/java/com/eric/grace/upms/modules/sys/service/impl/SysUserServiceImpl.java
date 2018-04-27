@@ -10,17 +10,22 @@ import com.eric.grace.upms.common.utils.SpringContextHolder;
 import com.eric.grace.upms.modules.sys.controller.dto.RequestPassword;
 import com.eric.grace.upms.modules.sys.controller.dto.RequestUser;
 import com.eric.grace.upms.modules.sys.entity.SysUser;
+import com.eric.grace.upms.modules.sys.mapper.SysRoleMapper;
 import com.eric.grace.upms.modules.sys.mapper.SysUserMapper;
 import com.eric.grace.upms.modules.sys.service.ISysUserRoleService;
 import com.eric.grace.upms.modules.sys.service.ISysUserService;
 import com.eric.grace.upms.modules.sys.service.ITokenService;
+import com.eric.grace.utils.collection.CollUtil;
+import com.eric.grace.utils.common.ArrayUtil;
 import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;
 import com.eric.grace.utils.crypto.digest.DigestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * SysUserServiceImpl: 用户业务实现类
@@ -53,15 +58,13 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
     /**
      * 创建用户
      *
-     * @param requestUser
+     * @param sysUser
      * @return
      */
-    public ResponseVo saveEntity(RequestUser requestUser,String createUserId) {
-        if (null == requestUser || null == requestUser.getSysUser()) {
+    public ResponseVo saveEntity(SysUser sysUser,String createUserId) {
+        if (null == sysUser) {
             return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
         }
-
-        SysUser sysUser = requestUser.getSysUser();
 
         // 验证账号
         if (StrUtil.isBlank(sysUser.getUsername())) {
@@ -78,15 +81,18 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
         sysUser.setUpdateUserId(createUserId);
         sysUser.setCreateTime(new Date());
         sysUser.setUpdateTime(new Date());
+
+        sysUser.setUserStatus(SysConstant.UserStatus.NORMAL.getValue());
+
         //初始化密码
         String passwordValid = DigestUtil.md5Hex(DigestUtil.md5Hex(SysConstant.DEFAULT_PASSWORD));
         sysUser.setPassword(PasswordHash.createHash(passwordValid));
         //设置数据为正常状态
         sysUser.setDelFlag(SysConstant.DEFAULT_DEL_FLAG_NO);
-
         super.insert(sysUser);
-        if (null != requestUser.getRoles() && !StrUtil.isBlank(requestUser.getRoles())) {
-            sysUserRoleService.saveUserRoles(requestUser.getSysUser().getId(), requestUser.getRoles(),createUserId);
+
+        if (null != sysUser.getRoleIdList() && !CollUtil.isEmpty(sysUser.getRoleIdList())) {
+            sysUserRoleService.saveUserRoles(sysUser.getId(), sysUser.getRoleIdList(),createUserId);
         }
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
     }
@@ -179,6 +185,34 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
 
         // 生成token
         return tokenService.createToken(sysUser.getId());
+    }
+
+
+    /**
+     * 批量删除用户
+     * @param ids
+     * @return
+     */
+    @Override
+    @Transactional
+    public String[] deleteBatch(String ids) {
+        String[] idArray = null;
+        if (StrUtil.sub(ids, 0, -1).equals(',')) {
+            idArray = StrUtil.splitToArray(StrUtil.sub(ids, 0, -1), ',');
+        } else {
+            idArray = StrUtil.splitToArray(ids, ',');
+        }
+
+        // 剔除超级管理员
+        if (ArrayUtil.contains(idArray, "0")) {
+            for (String str : idArray) {
+                if (str.equals("0")) {
+                    idArray = ArrayUtil.removeEle(idArray, str);
+                }
+            }
+        }
+        SpringContextHolder.getBean(SysUserMapper.class).deleteBatch(idArray);
+        return idArray;
     }
 
 

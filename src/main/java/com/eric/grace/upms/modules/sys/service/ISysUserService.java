@@ -7,6 +7,8 @@ import com.eric.grace.upms.modules.sys.controller.dto.RequestPassword;
 import com.eric.grace.upms.modules.sys.controller.dto.RequestUser;
 import com.eric.grace.upms.modules.sys.entity.SysUser;
 
+import java.util.List;
+
 /**
  * ISysUserService: 用户接口类
  *
@@ -25,10 +27,10 @@ public interface ISysUserService extends ICommonService<SysUser> {
 
     /**
      * 创建用户
-     * @param requestUser
+     * @param sysUser
      * @return
      */
-    ResponseVo saveEntity(RequestUser requestUser,String createUserId);
+    ResponseVo saveEntity(SysUser sysUser,String createUserId);
 
 
     /**
@@ -53,4 +55,11 @@ public interface ISysUserService extends ICommonService<SysUser> {
      * @return
      */
     ResponseVo login(String username, String password);
+
+    /**
+     * 批量删除用户
+     * @param ids
+     * @return
+     */
+    String[] deleteBatch(String ids);
 }

@@ -23,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SysRoleController: 系统角色控制成
@@ -170,6 +172,23 @@ public class SysRoleController extends AbstractController {
         Page<SysRole> pageList = sysRoleService.selectPage(page, wrapper);
         GracePage<SysRole> gracePage = new GracePage<SysRole>(pageList);
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, gracePage);
+    }
+
+
+
+    /**
+     * 角色列表
+     */
+    @RequestMapping("/select")
+   // @RequiresPermissions("sys:role:select")
+    public ResponseVo select(){
+        Map<String, Object> map = new HashMap<>();
+        //如果不是超级管理员，则只查询自己所拥有的角色列表
+        if(getUserId() != SysConstant.SUPER_ADMIN){
+            map.put("create_user_id", getUserId());
+        }
+        List<SysRole> list = sysRoleService.selectByMap(map);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,list);
     }
 
 

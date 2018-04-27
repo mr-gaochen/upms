@@ -1,5 +1,6 @@
 package com.eric.grace.upms.modules.sys.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.eric.grace.dao.common.model.page.FrontPage;
@@ -52,14 +53,13 @@ public class SysUserController extends AbstractController {
     /**
      * 创建用户
      *
-     * @param requestUser
+     * @param sysUser
      * @return
      */
-    @PostMapping("addUser")
+    @PostMapping("add")
     // @RequiresPermissions("sys:user:add")
-    public ResponseVo createUser(@RequestBody RequestUser requestUser) {
-
-        return sysUserService.saveEntity(requestUser, getUserId());
+    public ResponseVo createUser(@RequestBody SysUser sysUser) {
+        return sysUserService.saveEntity(sysUser, getUserId());
     }
 
 
@@ -70,7 +70,7 @@ public class SysUserController extends AbstractController {
      * @param username
      * @return
      */
-    @PostMapping("findOne")
+    @GetMapping("findOne")
     public ResponseVo findUserByIdOrUserName(String userId, String username) {
 
         if (StrUtil.isBlank(userId) && StrUtil.isBlank(username)) {
@@ -78,19 +78,22 @@ public class SysUserController extends AbstractController {
         }
 
         if (!StrUtil.isBlank(userId)) {
-
             SysUser sysUser = sysUserService.selectById(userId);
-            //获取用户所属的角色列表
-            List<String> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-            sysUser.setRoleIdList(roleIdList);
+            if (null != sysUser) {
+                //获取用户所属的角色列表
+                List<String> roleIdList = sysUserRoleService.queryRoleIdList(userId);
+                sysUser.setRoleIdList(roleIdList);
+            }
             return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
         }
 
         if (!StrUtil.isBlank(username)) {
             SysUser sysUser = sysUserService.selectUserByUsername(username);
-            //获取用户所属的角色列表
-            List<String> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-            sysUser.setRoleIdList(roleIdList);
+            if (null != sysUser) {
+                //获取用户所属的角色列表
+                List<String> roleIdList = sysUserRoleService.queryRoleIdList(userId);
+                sysUser.setRoleIdList(roleIdList);
+            }
             return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
         }
 
@@ -98,19 +101,19 @@ public class SysUserController extends AbstractController {
     }
 
 
-    /**
-     * 修改用户角色
-     *
-     * @return
-     */
-    @PutMapping(value = "editUserRole")
-    public ResponseVo editUserRoles(String userId, String roles) {
-        if (StrUtil.isBlank(userId) && StrUtil.isBlank(roles)) {
-            return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
-        }
-        sysUserRoleService.saveUserRoles(userId, roles, getUserId());
-        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
-    }
+//    /**
+//     * 修改用户角色
+//     *
+//     * @return
+//     */
+//    @PutMapping(value = "editUserRole")
+//    public ResponseVo editUserRoles(String userId, String roles) {
+//        if (StrUtil.isBlank(userId) && StrUtil.isBlank(roles)) {
+//            return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
+//        }
+//        sysUserRoleService.saveUserRoles(userId, roles, getUserId());
+//        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
+//    }
 
 
     /**
@@ -155,7 +158,7 @@ public class SysUserController extends AbstractController {
      * @return
      */
     @PostMapping("list")
-   // @RequiresPermissions("sys:user:list")
+    // @RequiresPermissions("sys:user:list")
     public ResponseVo getAllUsersPages(@RequestBody FrontPage<SysUser> spage) {
         Page<SysUser> page = new Page<SysUser>(spage.getCurentPage(), spage.getPageRowNum());
         if (null != spage.getSort()) {
@@ -205,24 +208,22 @@ public class SysUserController extends AbstractController {
     /**
      * 删除用户
      */
-    @DeleteMapping("/delete")
-   // @RequiresPermissions("sys:user:delete")
-    public ResponseVo delete(@RequestBody String userIds) {
+    @DeleteMapping("/delete/{userIds}")
+    // @RequiresPermissions("sys:user:delete")
+    public ResponseVo delete(@PathVariable String userIds) {
 
         if (StrUtil.isBlank(userIds)) {
             return ResultUtil.error(GraceExceptionEnum.PARAMS_ERROR);
         }
 
-
         String[] ids = userIds.split(",");
-        if (ArrayUtil.contains(ids, getUserId())) {
+        if (ArrayUtil.contains(ids, getUserId()) || ArrayUtil.contains(ids, "1")) {
             return ResultUtil.error(GraceExceptionEnum.BUSINESS_FAILE.getCode(), "当前用户不能删除");
         }
 
-        List<String> colList = CollUtil.newArrayList(ids);
-        sysUserService.deleteBatchIds(colList);
+        String[] idArray = sysUserService.deleteBatch(userIds);
 
-        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, idArray);
     }
 
 }

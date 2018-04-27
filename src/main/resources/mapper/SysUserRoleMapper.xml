@@ -10,7 +10,7 @@
 
     <!-- 根据用户ID 获取角色ID -->
     <select id="queryRoleIdList" resultType="String">
-        select role_id from sys_user_role where user_id = #{value}
+        select role_id from t_sys_user_role where user_id = #{value}
     </select>
 
 </mapper>

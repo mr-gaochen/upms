@@ -3,6 +3,7 @@ package com.eric.grace.upms.modules.sys.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.eric.grace.dao.common.service.impl.CommonServiceImpl;
+import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.common.utils.SpringContextHolder;
 import com.eric.grace.upms.modules.sys.entity.SysUserRole;
 import com.eric.grace.upms.modules.sys.mapper.SysUserRoleMapper;
@@ -38,17 +39,16 @@ public class SysUserRoleServiceImpl extends CommonServiceImpl<SysUserRoleMapper,
      */
     @Override
     @Transactional
-    public void saveUserRoles(String userId, String roleIds,String updateUserId) {
+    public void saveUserRoles(String userId, List<String> roleIds,String updateUserId) {
         // role 不为空 且 用户ID 不为空 执行角色分配
-        if (!StrUtil.isBlank(roleIds) && !StrUtil.isBlank(userId)) {
+        if (roleIds.size() > 0 && !StrUtil.isBlank(userId)) {
 
             //删除旧角色
             SpringContextHolder.getBean(SysUserRoleMapper.class).deleteRolesByUserId(userId);
 
             // 插入新角色
-            String[] roles = roleIds.split(",");
             ArrayList userRoles = CollUtil.newArrayList();
-            for (String roleId : roles) {
+            for (String roleId : roleIds) {
                 SysUserRole sysUserRole = new SysUserRole();
                 sysUserRole.setId(RandomUtil.simpleUUID());
                 sysUserRole.setUserId(userId);
@@ -57,6 +57,7 @@ public class SysUserRoleServiceImpl extends CommonServiceImpl<SysUserRoleMapper,
                 sysUserRole.setUpdateUserId(updateUserId);
                 sysUserRole.setCreateTime(new Date());
                 sysUserRole.setUpdateTime(new Date());
+                sysUserRole.setDelFlag(SysConstant.DEFAULT_DEL_FLAG_NO);
                 userRoles.add(sysUserRole);
             }
             logger.info(JSON.toJSONString(userRoles));

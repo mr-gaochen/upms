@@ -24,5 +24,10 @@ public interface ISysRoleService extends ICommonService<SysRole> {
      */
     String[] deleteBatch(String roleId);
 
+    /**
+     * 根据角色编码查询角色
+     * @param roleCode
+     * @return
+     */
     SysRole selectByRoleCode(String roleCode);
 }

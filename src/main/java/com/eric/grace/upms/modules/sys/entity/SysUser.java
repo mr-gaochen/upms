@@ -3,6 +3,7 @@ package com.eric.grace.upms.modules.sys.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.eric.grace.dao.common.model.BaseModel;
+import com.eric.grace.upms.common.constant.SysConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -67,8 +68,6 @@ public class SysUser extends BaseModel<SysUser> {
     @ApiModelProperty(value = "用户状态")
     @TableField("user_status")
     private Integer userStatus;
-
-
 
     /**
      * 角色ID列表
@@ -165,7 +164,6 @@ public class SysUser extends BaseModel<SysUser> {
     public void setUserStatus(Integer userStatus) {
         this.userStatus = userStatus;
     }
-
 
     public List<String> getRoleIdList() {
         return roleIdList;
