@@ -20,6 +20,7 @@ import com.eric.grace.utils.common.ArrayUtil;
 import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;
 import io.swagger.annotations.Api;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SysUserController: 系统用户类
@@ -123,7 +125,7 @@ public class SysUserController extends AbstractController {
      */
     @PutMapping(value = "editUser")
     public ResponseVo editUser(@RequestBody SysUser sysUser) {
-        sysUserService.updateById(sysUser);
+        sysUser = sysUserService.updateUser(sysUser);
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
     }
 
@@ -170,8 +172,9 @@ public class SysUserController extends AbstractController {
             page.setAsc(spage.getSort().getReverse());
         }
 
-        EntityWrapper<SysUser> wrapper = new EntityWrapper<>();
-
+      //  EntityWrapper<SysUser> wrapper = new EntityWrapper<>();
+        Map<String,String> params = new HashedMap();
+        // 构造查询参数
         if (spage.getSearch() != null) {
             Field[] fields = spage.getSearch().getClass().getDeclaredFields();
             for (int i = 0; i < fields.length; i++) {
@@ -180,14 +183,15 @@ public class SysUserController extends AbstractController {
                     Object value = fields[i].get(spage.getSearch());
                     if (null != value && !value.equals("")) {
                         String fieldname = StringTools.underscoreName(fields[i].getName());
-                        wrapper.like(fieldname, value.toString());
+                        params.put(fieldname,value.toString());
                     }
                     fields[i].setAccessible(false);
                 } catch (Exception e) {
                 }
             }
         }
-        Page<SysUser> pageList = sysUserService.selectPage(page, wrapper);
+
+        Page<SysUser> pageList = sysUserService.selectOptionPage(page, params);
         GracePage<SysUser> gracePage = new GracePage<SysUser>(pageList);
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, gracePage);
     }

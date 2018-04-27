@@ -74,6 +74,8 @@ public class SysUser extends BaseModel<SysUser> {
      */
     @TableField(exist = false)
     private List<String> roleIdList;
+    @TableField(exist = false)
+    private String roleIds;
 
 
     public String getUsername() {
@@ -171,6 +173,15 @@ public class SysUser extends BaseModel<SysUser> {
 
     public void setRoleIdList(List<String> roleIdList) {
         this.roleIdList = roleIdList;
+    }
+
+
+    public String getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(String roleIds) {
+        this.roleIds = roleIds;
     }
 }
 

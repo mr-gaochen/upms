@@ -1,5 +1,6 @@
 package com.eric.grace.upms.modules.sys.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.eric.grace.dao.common.service.impl.CommonServiceImpl;
 import com.eric.grace.service.exception.enums.GraceExceptionEnum;
 import com.eric.grace.service.result.ResponseVo;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SysUserServiceImpl: 用户业务实现类
@@ -213,6 +215,28 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
         }
         SpringContextHolder.getBean(SysUserMapper.class).deleteBatch(idArray);
         return idArray;
+    }
+
+
+    /**
+     * 条件查询用户
+     * @param page
+     * @param params
+     * @return
+     */
+    @Override
+    public Page<SysUser> selectOptionPage(Page<SysUser> page, Map<String, String> params) {
+        return page.setRecords(SpringContextHolder.getBean(SysUserMapper.class).queryAll(page, params));
+    }
+
+    /**
+     * 更新用户信息
+     * @param sysUser
+     * @return
+     */
+    @Override
+    public SysUser updateUser(SysUser sysUser) {
+        return null;
     }
 
 

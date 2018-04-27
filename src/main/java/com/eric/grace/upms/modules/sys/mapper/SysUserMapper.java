@@ -1,10 +1,13 @@
 package com.eric.grace.upms.modules.sys.mapper;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.eric.grace.dao.common.dao.CommonDao;
 import com.eric.grace.upms.modules.sys.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * SysUserMapper:
@@ -35,4 +38,12 @@ public interface SysUserMapper extends CommonDao<SysUser> {
      * @param userId
      */
     void deleteBatch(String[] userId);
+
+    /**
+     * 获取所有用户
+     * @param page
+     * @param params
+     * @return
+     */
+    List<SysUser> queryAll(Page<SysUser> page, @Param("params") Map<String, String> params);
 }

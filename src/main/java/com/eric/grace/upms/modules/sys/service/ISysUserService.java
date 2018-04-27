@@ -1,13 +1,14 @@
 package com.eric.grace.upms.modules.sys.service;
 
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.eric.grace.dao.common.service.ICommonService;
 import com.eric.grace.service.result.ResponseVo;
 import com.eric.grace.upms.modules.sys.controller.dto.RequestPassword;
-import com.eric.grace.upms.modules.sys.controller.dto.RequestUser;
 import com.eric.grace.upms.modules.sys.entity.SysUser;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ISysUserService: 用户接口类
@@ -62,4 +63,20 @@ public interface ISysUserService extends ICommonService<SysUser> {
      * @return
      */
     String[] deleteBatch(String ids);
+
+    /**
+     * 条件查询用户
+     * @param page
+     * @param params
+     * @return
+     */
+    Page<SysUser> selectOptionPage(Page<SysUser> page, Map<String, String> params);
+
+
+    /**
+     * 更新用户信息
+     * @param sysUser
+     * @return
+     */
+    SysUser updateUser(SysUser sysUser);
 }
