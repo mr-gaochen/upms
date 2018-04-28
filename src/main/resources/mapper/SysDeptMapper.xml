@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eric.grace.upms.modules.sys.mapper.SysDeptMapper">
+
+
+     <!-- 获取所有 -->
+     <select id="queryAll" resultType="com.eric.grace.upms.modules.sys.entity.SysDept">
+        select d.*,(select p.name from t_sys_dept p where p.id = d.parent_id) as parentName
+		from t_sys_dept d where d.del_flag = 'N'
+     </select>
+
+    <!-- 查询当前机构下的子机构 -->
+    <select id="queryDetpIdList" resultType="String">
+        select id from t_sys_dept where parent_id = #{value} and del_flag = 'N'
+    </select>
+
+</mapper>

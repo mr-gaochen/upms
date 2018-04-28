@@ -4,6 +4,8 @@ import com.eric.grace.dao.common.dao.CommonDao;
 import com.eric.grace.upms.modules.sys.entity.SysDept;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * SysDeptMapper:
  *
@@ -12,4 +14,10 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysDeptMapper extends CommonDao<SysDept> {
+
+    // 获取所有部门
+    List<SysDept> queryAll();
+
+    // 查询当前机构下的子机构
+    List<String> queryDetpIdList(String parentId);
 }

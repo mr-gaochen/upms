@@ -123,7 +123,7 @@ public class SysUserController extends AbstractController {
      *
      * @return
      */
-    @PutMapping(value = "editUser")
+    @PutMapping(value = "edit")
     public ResponseVo editUser(@RequestBody SysUser sysUser) {
         sysUser = sysUserService.updateUser(sysUser);
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
