@@ -78,5 +78,5 @@ public interface ISysUserService extends ICommonService<SysUser> {
      * @param sysUser
      * @return
      */
-    SysUser updateUser(SysUser sysUser);
+    ResponseVo updateUser(SysUser sysUser,String updateId);
 }

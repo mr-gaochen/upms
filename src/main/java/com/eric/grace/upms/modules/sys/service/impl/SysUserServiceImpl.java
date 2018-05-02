@@ -235,11 +235,15 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
      * @return
      */
     @Override
-    public SysUser updateUser(SysUser sysUser) {
+    public ResponseVo updateUser(SysUser sysUser,String updateUserId) {
+        // 维护用户角色信息
 
-
-
-        return null;
+        if (null != sysUser.getRoleIdList() && !CollUtil.isEmpty(sysUser.getRoleIdList())) {
+            sysUserRoleService.saveUserRoles(sysUser.getId(), sysUser.getRoleIdList(),updateUserId);
+        }
+        // 维护用户基本信息 部门信息
+        super.updateById(sysUser);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
     }
 
 

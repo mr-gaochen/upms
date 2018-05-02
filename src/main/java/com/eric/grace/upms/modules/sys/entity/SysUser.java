@@ -78,6 +78,19 @@ public class SysUser extends BaseModel<SysUser> {
     private String roleIds;
 
 
+    /**
+     * 部门ID
+     */
+
+    private String deptId;
+
+    /**
+     * 部门名称
+     */
+    @TableField(exist = false)
+    private String deptName;
+
+
     public String getUsername() {
         return username;
     }
@@ -182,6 +195,22 @@ public class SysUser extends BaseModel<SysUser> {
 
     public void setRoleIds(String roleIds) {
         this.roleIds = roleIds;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 }
 

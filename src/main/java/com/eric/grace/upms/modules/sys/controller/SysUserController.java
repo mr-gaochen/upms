@@ -123,10 +123,9 @@ public class SysUserController extends AbstractController {
      *
      * @return
      */
-    @PutMapping(value = "edit")
+    @PostMapping(value = "update")
     public ResponseVo editUser(@RequestBody SysUser sysUser) {
-        sysUser = sysUserService.updateUser(sysUser);
-        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
+       return sysUserService.updateUser(sysUser,getUserId());
     }
 
 
@@ -135,22 +134,22 @@ public class SysUserController extends AbstractController {
      *
      * @return
      */
-    @PutMapping(value = "resetPw")
-    public ResponseVo resetPw(@RequestBody String userId) {
-        return sysUserService.resetPassword(userId);
+    @PostMapping(value = "resetPw")
+    public ResponseVo resetPw(@RequestBody String id) {
+        return sysUserService.resetPassword(id);
     }
 
 
-    /**
-     * 更新密码
-     *
-     * @param requestPassword
-     * @return
-     */
-    @PostMapping(value = "editPw")
-    public ResponseVo editPw(@RequestBody RequestPassword requestPassword) {
-        return sysUserService.EditPassword(requestPassword);
-    }
+//    /**
+//     * 更新密码
+//     *
+//     * @param requestPassword
+//     * @return
+//     */
+//    @PostMapping(value = "editPw")
+//    public ResponseVo editPw(@RequestBody RequestPassword requestPassword) {
+//        return sysUserService.EditPassword(requestPassword);
+//    }
 
 
     /**

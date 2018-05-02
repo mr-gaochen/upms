@@ -11,9 +11,11 @@
 
     <!-- 获取所有用户 -->
     <select id="queryAll" parameterType="java.util.Map" resultType="com.eric.grace.upms.modules.sys.entity.SysUser">
-        select u.*,group_concat(ur.role_id) as 'roleIds' from t_sys_user u
-          left join t_sys_user_role  ur on u.id = ur.user_id
+        -- select u.*,group_concat(ur.role_id) as 'roleIds' from t_sys_user u
+        -- left join t_sys_user_role ur on u.id = ur.user_id
 
+        select u.*, group_concat(ur.role_id) as 'roleIds', (select d.name from t_sys_dept d where d.id = u.dept_id)
+        deptName from t_sys_user u left join t_sys_user_role ur on u.id = ur.user_id
         <if test=" null != params">
             <where>
                 <foreach collection="params.keys" item="k" separator="and">
