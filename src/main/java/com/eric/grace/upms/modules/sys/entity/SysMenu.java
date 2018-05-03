@@ -18,23 +18,23 @@ public class SysMenu extends BaseModel<SysMenu> {
 
 
     @ApiModelProperty(value = "菜单名称")
-    @TableField("meun_name")
+    @TableField("menu_name")
     private String menuName;
 
     @ApiModelProperty(value = "菜单路径")
-    @TableField("meun_href")
+    @TableField("menu_href")
     private String menuHref;
 
     @ApiModelProperty(value = "菜单类型  0：目录   1：菜单   2：按钮 ")
-    @TableField("meun_type")
+    @TableField("menu_type")
     private String menuType;
 
     @ApiModelProperty(value = "菜单图标")
-    @TableField("meun_icon")
+    @TableField("menu_icon")
     private String menuIcon;
 
     @ApiModelProperty(value = "菜单排序")
-    @TableField("meun_sort")
+    @TableField("menu_sort")
     private String menuSort;
 
     @ApiModelProperty(value = "父菜单")

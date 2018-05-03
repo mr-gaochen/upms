@@ -1,12 +1,18 @@
 package com.eric.grace.upms.modules.sys.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.eric.grace.service.exception.enums.GraceExceptionEnum;
 import com.eric.grace.service.result.ResponseVo;
+import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.upms.modules.sys.entity.SysMenu;
 import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -25,11 +31,15 @@ public class SysMenuController {
 
 
 
-
-
-
-
-
+    /**
+     * 所有菜单列表
+     */
+    @PostMapping("/list")
+   // @RequiresPermissions("sys:menu:list")
+    public ResponseVo list(){
+        List<SysMenu> menuList = sysMenuService.selectList(new EntityWrapper<>());
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, menuList);
+    }
 
 
     /***
@@ -40,7 +50,7 @@ public class SysMenuController {
      * @return R
      */
     @PostMapping("/save")
-    @RequiresPermissions("sys:menu:save")
+   // @RequiresPermissions("sys:menu:save")
     public ResponseVo save(@RequestBody SysMenu menu) {
         return sysMenuService.save(menu);
     }
@@ -56,7 +66,7 @@ public class SysMenuController {
      * @return R
      */
     @PostMapping("/update")
-    @RequiresPermissions("sys:menu:update")
+   // @RequiresPermissions("sys:menu:update")
     public ResponseVo update(@RequestBody SysMenu menu){
         return sysMenuService.updateEntity(menu);
     }
@@ -68,7 +78,7 @@ public class SysMenuController {
      * @return
      */
     @DeleteMapping("/delete")
-    @RequiresPermissions("sys:menu:delete")
+ //   @RequiresPermissions("sys:menu:delete")
     public ResponseVo delete(String menuId){
         return sysMenuService.deleteByMenuId(menuId);
     }
