@@ -30,4 +30,10 @@ public interface ISysRoleService extends ICommonService<SysRole> {
      * @return
      */
     SysRole selectByRoleCode(String roleCode);
+
+    /**
+     * 更新角色
+     * @param role
+     */
+    void update(SysRole role);
 }

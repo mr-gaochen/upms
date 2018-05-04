@@ -103,11 +103,11 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
         }
 
 
-        //上级菜单类型
+        //获取上级菜单类型
         String parentType = SysConstant.MenuType.CATALOG.getValue();
         if (!menu.getParentId().equals("0")) {
             EntityWrapper<SysMenu> wrapper = new EntityWrapper<>();
-            wrapper.eq("parent_id", menu.getParentId());
+            wrapper.eq("id", menu.getParentId());
             SysMenu parentMenu = super.selectOne(wrapper);
             parentType = parentMenu.getMenuType();
         }

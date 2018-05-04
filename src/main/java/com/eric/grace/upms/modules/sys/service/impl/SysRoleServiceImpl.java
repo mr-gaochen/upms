@@ -9,6 +9,8 @@ import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.common.utils.SpringContextHolder;
 import com.eric.grace.upms.modules.sys.entity.SysRole;
 import com.eric.grace.upms.modules.sys.mapper.SysRoleMapper;
+import com.eric.grace.upms.modules.sys.service.ISysRoleDeptService;
+import com.eric.grace.upms.modules.sys.service.ISysRoleMenuService;
 import com.eric.grace.upms.modules.sys.service.ISysRoleService;
 import com.eric.grace.utils.collection.CollUtil;
 import com.eric.grace.utils.common.ArrayUtil;
@@ -16,6 +18,7 @@ import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +35,13 @@ import java.util.Set;
 @Service
 public class SysRoleServiceImpl extends CommonServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
 
-
     private static Logger logger = LoggerFactory.getLogger(SysRoleServiceImpl.class);
+
+    @Autowired
+    private ISysRoleMenuService sysRoleMenuService;
+    @Autowired
+    private ISysRoleDeptService sysRoleDeptService;
+
 
     /**
      * 创建角色
@@ -43,6 +51,7 @@ public class SysRoleServiceImpl extends CommonServiceImpl<SysRoleMapper, SysRole
      * @return
      */
     @Override
+    @Transactional
     public ResponseVo save(SysRole role, String createId) {
 
         role.setId(RandomUtil.simpleUUID());
@@ -52,6 +61,13 @@ public class SysRoleServiceImpl extends CommonServiceImpl<SysRoleMapper, SysRole
         role.setCreateUserId(createId);
         role.setUpdateTime(new Date());
         super.insert(role);
+
+        //保存角色与菜单关系
+        sysRoleMenuService.saveOrUpdate(role.getId(), role.getMenuIdList());
+
+        //保存角色与部门关系
+        sysRoleDeptService.saveOrUpdate(role.getId(), role.getDeptIdList());
+
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, role);
     }
 
@@ -98,6 +114,20 @@ public class SysRoleServiceImpl extends CommonServiceImpl<SysRoleMapper, SysRole
         return (SysRole) selectOne(wrapper);
     }
 
+    /**
+     * 更新角色
+     * @param role
+     */
+    @Override
+    @Transactional
+    public void update(SysRole role) {
+        super.updateById(role);
+        //更新角色与菜单关系
+        sysRoleMenuService.saveOrUpdate(role.getId(), role.getMenuIdList());
+
+        //保存角色与部门关系
+        sysRoleDeptService.saveOrUpdate(role.getId(), role.getDeptIdList());
+    }
 
 
 }

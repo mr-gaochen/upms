@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.util.List;
+
 /**
  * SysRole: 系统角色实体类
  *
@@ -42,6 +44,14 @@ public class SysRole extends BaseModel<SysRole> {
     @ApiModelProperty(value = "父菜单")
     @TableField("parent_id")
     private String parentId;
+
+    @TableField(exist = false)
+    private List<String> menuIdList;
+
+    @TableField(exist = false)
+    private List<String> deptIdList;
+
+
 
 
     public String getRoleTypeId() {
@@ -90,5 +100,22 @@ public class SysRole extends BaseModel<SysRole> {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+
+    public List<String> getMenuIdList() {
+        return menuIdList;
+    }
+
+    public void setMenuIdList(List<String> menuIdList) {
+        this.menuIdList = menuIdList;
+    }
+
+    public List<String> getDeptIdList() {
+        return deptIdList;
+    }
+
+    public void setDeptIdList(List<String> deptIdList) {
+        this.deptIdList = deptIdList;
     }
 }

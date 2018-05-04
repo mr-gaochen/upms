@@ -68,7 +68,7 @@ public class SysRoleController extends AbstractController {
     // @RequiresPermissions("sys:role:update")
     public ResponseVo update(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
-        sysRoleService.updateById(role);
+        sysRoleService.update(role);
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, role);
     }
 
