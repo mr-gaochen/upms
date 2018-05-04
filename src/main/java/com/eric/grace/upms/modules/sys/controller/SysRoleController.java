@@ -40,8 +40,10 @@ public class SysRoleController extends AbstractController {
     @Autowired
     private ISysRoleService sysRoleService;
 
+    @Autowired
     private ISysRoleMenuService sysRoleMenuService;
 
+    @Autowired
     private ISysRoleDeptService sysRoleDeptService;
 
 
@@ -101,7 +103,7 @@ public class SysRoleController extends AbstractController {
      * @return com.eric.grace.service.result.ResponseVo
      */
     @GetMapping("/info/{roleId}")
-    @RequiresPermissions("sys:role:info")
+   // @RequiresPermissions("sys:role:info")
     public ResponseVo info(@PathVariable("roleId") String roleId) {
         SysRole role = sysRoleService.selectById(roleId);
         //查询角色对应的菜单
@@ -178,20 +180,20 @@ public class SysRoleController extends AbstractController {
 
 
 
-    /**
-     * 角色列表
-     */
-    @RequestMapping("/select")
-   // @RequiresPermissions("sys:role:select")
-    public ResponseVo select(){
-        Map<String, Object> map = new HashMap<>();
-        //如果不是超级管理员，则只查询自己所拥有的角色列表
-        if(getUserId() != SysConstant.SUPER_ADMIN){
-            map.put("create_user_id", getUserId());
-        }
-        List<SysRole> list = sysRoleService.selectByMap(map);
-        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,list);
-    }
+//    /**
+//     * 角色列表
+//     */
+//    @RMapping("/select")
+//   // @RequiresPermissions("sys:role:select")
+//    public ResponseVo select(){
+//        Map<String, Object> map = new HashMap<>();
+//        //如果不是超级管理员，则只查询自己所拥有的角色列表
+//        if(getUserId() != SysConstant.SUPER_ADMIN){
+//            map.put("create_user_id", getUserId());
+//        }
+//        List<SysRole> list = sysRoleService.selectByMap(map);
+//        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,list);
+//    }
 
 
 }
