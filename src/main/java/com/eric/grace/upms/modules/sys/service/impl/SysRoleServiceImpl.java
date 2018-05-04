@@ -1,6 +1,7 @@
 package com.eric.grace.upms.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.eric.grace.dao.common.service.impl.CommonServiceImpl;
 import com.eric.grace.service.exception.enums.GraceExceptionEnum;
 import com.eric.grace.service.result.ResponseVo;
@@ -9,6 +10,7 @@ import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.common.utils.SpringContextHolder;
 import com.eric.grace.upms.modules.sys.entity.SysRole;
 import com.eric.grace.upms.modules.sys.mapper.SysRoleMapper;
+import com.eric.grace.upms.modules.sys.mapper.SysUserMapper;
 import com.eric.grace.upms.modules.sys.service.ISysRoleDeptService;
 import com.eric.grace.upms.modules.sys.service.ISysRoleMenuService;
 import com.eric.grace.upms.modules.sys.service.ISysRoleService;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -127,6 +130,18 @@ public class SysRoleServiceImpl extends CommonServiceImpl<SysRoleMapper, SysRole
 
         //保存角色与部门关系
         sysRoleDeptService.saveOrUpdate(role.getId(), role.getDeptIdList());
+    }
+
+
+    /**
+     * 条件查询角色
+     * @param page
+     * @param params
+     * @return
+     */
+    @Override
+    public Page<SysRole> selectOptionPage(Page<SysRole> page, Map<String, String> params) {
+        return page.setRecords(SpringContextHolder.getBean(SysRoleMapper.class).queryAll(page, params));
     }
 
 

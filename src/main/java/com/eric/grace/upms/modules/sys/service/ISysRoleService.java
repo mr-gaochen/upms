@@ -1,8 +1,11 @@
 package com.eric.grace.upms.modules.sys.service;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.eric.grace.dao.common.service.ICommonService;
 import com.eric.grace.service.result.ResponseVo;
 import com.eric.grace.upms.modules.sys.entity.SysRole;
+
+import java.util.Map;
 
 /**
  * ISysRoleService: 系统角色接口类
@@ -36,4 +39,12 @@ public interface ISysRoleService extends ICommonService<SysRole> {
      * @param role
      */
     void update(SysRole role);
+
+    /**
+     * 条件查询角色
+     * @param page
+     * @param params
+     * @return
+     */
+    Page<SysRole> selectOptionPage(Page<SysRole> page, Map<String, String> params);
 }

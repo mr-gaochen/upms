@@ -4,6 +4,22 @@
 <mapper namespace="com.eric.grace.upms.modules.sys.mapper.SysRoleMapper">
 
 
+    <!-- 获取所有角色 -->
+    <select id="queryAll" parameterType="java.util.Map" resultType="com.eric.grace.upms.modules.sys.entity.SysRole">
+        select r.*, (select d.name from t_sys_dept d where d.id = r.dept_id) deptName from t_sys_role r
+        <if test=" null != params">
+            <where>
+                <foreach collection="params.keys" item="k" separator="and">
+                    <if test="null != params[k]">
+                        r.${k} like concat('%',#{params[${k}]},'%')
+                    </if>
+                </foreach>
+            </where>
+        </if>
+
+    </select>
+
+
 
     <!-- 删除角色 -->         <!-- 删除用户角色 -->     <!-- 删除角色菜单 -->      <!-- 删除角色部门 -->
     <delete id="deleteBatch" parameterType="String">
@@ -14,17 +30,17 @@
         </foreach>
         ;
 
-        <!--delete from t_sys_user_role where role_id in-->
-        <!--<foreach item="id" collection="array" open="(" separator="," close=")">-->
-            <!--#{id}-->
-        <!--</foreach>-->
-        <!--;-->
+        delete from t_sys_user_role where role_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        ;
 
-        <!--delete from t_sys_role_menu where role_id in-->
-        <!--<foreach item="id" collection="array" open="(" separator="," close=")">-->
-            <!--#{id}-->
-        <!--</foreach>-->
-        <!--;-->
+        delete from t_sys_role_menu where role_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        ;
 
     </delete>
 

@@ -41,15 +41,22 @@ public class SysRole extends BaseModel<SysRole> {
     @TableField("role_icon")
     private String roleIcon;
 
-    @ApiModelProperty(value = "父菜单")
+    @ApiModelProperty(value = "父角色")
     @TableField("parent_id")
     private String parentId;
+
+    @ApiModelProperty(value = "所属部门")
+    @TableField("dept_id")
+    private String deptId;
 
     @TableField(exist = false)
     private List<String> menuIdList;
 
     @TableField(exist = false)
     private List<String> deptIdList;
+
+    @TableField(exist = false)
+    private String deptName;
 
 
 
@@ -117,5 +124,21 @@ public class SysRole extends BaseModel<SysRole> {
 
     public void setDeptIdList(List<String> deptIdList) {
         this.deptIdList = deptIdList;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
     }
 }

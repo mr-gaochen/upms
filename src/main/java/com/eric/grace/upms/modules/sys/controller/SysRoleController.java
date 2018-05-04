@@ -12,12 +12,11 @@ import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.common.utils.ValidatorUtils;
 import com.eric.grace.upms.modules.sys.entity.SysDept;
 import com.eric.grace.upms.modules.sys.entity.SysRole;
-import com.eric.grace.upms.modules.sys.service.ISysDeptService;
-import com.eric.grace.upms.modules.sys.service.ISysMenuService;
-import com.eric.grace.upms.modules.sys.service.ISysRoleService;
+import com.eric.grace.upms.modules.sys.service.*;
 import com.eric.grace.utils.collection.CollUtil;
 import com.eric.grace.utils.common.StrUtil;
 import io.swagger.annotations.Api;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,10 +39,11 @@ public class SysRoleController extends AbstractController {
 
     @Autowired
     private ISysRoleService sysRoleService;
-    @Autowired
-    private ISysMenuService menuService;
-    @Autowired
-    private ISysDeptService deptService;
+
+    private ISysRoleMenuService sysRoleMenuService;
+
+    private ISysRoleDeptService sysRoleDeptService;
+
 
 
     /***
@@ -104,15 +104,15 @@ public class SysRoleController extends AbstractController {
     @RequiresPermissions("sys:role:info")
     public ResponseVo info(@PathVariable("roleId") String roleId) {
         SysRole role = sysRoleService.selectById(roleId);
-//        //查询角色对应的菜单
-//        List<String> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
-//        role.setMenuIdList(menuIdList);
-//
-//        //查询角色对应的部门
-//        List<Long> deptIdList = sysRoleDeptService.queryDeptIdList(roleId);
-//        role.setDeptIdList(deptIdList);
+        //查询角色对应的菜单
+        List<String> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
+        role.setMenuIdList(menuIdList);
 
-        return null;
+        //查询角色对应的部门
+        List<String> deptIdList = sysRoleDeptService.queryDeptIdList(roleId);
+        role.setDeptIdList(deptIdList);
+
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,role);
     }
 
 
@@ -148,7 +148,8 @@ public class SysRoleController extends AbstractController {
             page.setAsc(spage.getSort().getReverse());
         }
 
-        EntityWrapper<SysRole> wrapper = new EntityWrapper<>();
+       // EntityWrapper<SysRole> wrapper = new EntityWrapper<>();
+        Map<String,String> params = new HashedMap();
         if (spage.getSearch() != null) {
             Field[] fields = spage.getSearch().getClass().getDeclaredFields();
             for (int i = 0; i < fields.length; i++) {
@@ -157,7 +158,7 @@ public class SysRoleController extends AbstractController {
                     Object value = fields[i].get(spage.getSearch());
                     if (null != value && !value.equals("")) {
                         String fieldname = StringTools.underscoreName(fields[i].getName());
-                        wrapper.like(fieldname, value.toString());
+                        params.put(fieldname,value.toString());
                     }
                     fields[i].setAccessible(false);
                 } catch (Exception e) {
@@ -166,10 +167,11 @@ public class SysRoleController extends AbstractController {
         }
         //如果不是超级管理员，则只查询自己创建的角色列表
         if (getUserId() != SysConstant.SUPER_ADMIN) {
-            wrapper.eq("create_user_id", getUserId());
+            params.put("create_user_id",getUserId());
 
         }
-        Page<SysRole> pageList = sysRoleService.selectPage(page, wrapper);
+        Page<SysRole> pageList = sysRoleService.selectOptionPage(page, params);
+
         GracePage<SysRole> gracePage = new GracePage<SysRole>(pageList);
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, gracePage);
     }
