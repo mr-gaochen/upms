@@ -31,4 +31,22 @@
     </select>
 
 
+
+
+    <!-- 查询用户的所有菜单ID -->
+    <select id="queryAllMenuId" resultType="com.eric.grace.upms.modules.sys.entity.SysMenu">
+        SELECT * FROM t_sys_menu where id in (
+        select distinct rm.menu_id from t_sys_user_role ur
+        LEFT JOIN t_sys_role_menu rm on ur.role_id = rm.role_id
+        where ur.user_id = #{userId}) and menu_type IN  (0,1);
+    </select>
+
+
+    <select id="selectAllList" resultType="com.eric.grace.upms.modules.sys.entity.SysMenu">
+        SELECT * FROM t_sys_menu where menu_type IN  (0,1)
+    </select>
+
+
+
+
 </mapper>

@@ -33,10 +33,6 @@ public class SysMenuController extends AbstractController{
     @Autowired
     private ISysMenuService sysMenuService;
 
-    @Autowired
-    private IShiroService shiroService;
-
-
 
 
     /**

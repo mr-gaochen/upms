@@ -38,14 +38,6 @@
 
 
 
-    <!-- 查询用户的所有菜单ID -->
-    <select id="queryAllMenuId" resultType="String">
-        select distinct rm.menu_id from t_sys_user_role ur
-        LEFT JOIN t_sys_role_menu rm on ur.role_id = rm.role_id
-        where ur.user_id = #{userId}
-    </select>
-
-
     <!-- 批量删除用户 -->
     <delete id="deleteBatch">
 

@@ -6,17 +6,19 @@
 
     <!-- 获取所有角色 -->
     <select id="queryAll" parameterType="java.util.Map" resultType="com.eric.grace.upms.modules.sys.entity.SysRole">
-        select r.*, (select d.name from t_sys_dept d where d.id = r.dept_id) deptName from t_sys_role r
+
+        SELECT t.*,d.name,group_concat(d.name) as 'deptName' from (SELECT r.*,rd.dept_id as dept from t_sys_role r LEFT JOIN t_sys_role_dept rd on r.id = rd.role_id) t LEFT JOIN t_sys_dept d on t.dept =d.id
+
         <if test=" null != params">
             <where>
                 <foreach collection="params.keys" item="k" separator="and">
                     <if test="null != params[k]">
-                        r.${k} like concat('%',#{params[${k}]},'%')
+                        t.${k} like concat('%',#{params[${k}]},'%')
                     </if>
                 </foreach>
             </where>
         </if>
-
+        GROUP BY t.id
     </select>
 
 

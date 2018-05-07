@@ -249,16 +249,16 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
     }
 
-
-    /**
-     * 查询用户拥有的菜单ID
-     * @param userId
-     * @return
-     */
-    @Override
-    public List<String> queryAllMenuId(String userId) {
-        return sysUserMapper.queryAllMenuId(userId);
-    }
+//
+//    /**
+//     * 查询用户拥有的菜单ID
+//     * @param userId
+//     * @return
+//     */
+//    @Override
+//    public List<String> queryAllMenuId(String userId) {
+//        return sysUserMapper.queryAllMenuId(userId);
+//    }
 
 
     /**

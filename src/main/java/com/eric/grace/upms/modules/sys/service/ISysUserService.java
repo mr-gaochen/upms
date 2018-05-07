@@ -81,8 +81,8 @@ public interface ISysUserService extends ICommonService<SysUser> {
     ResponseVo updateUser(SysUser sysUser,String updateId);
 
 
-    /**
-     * 查询用户的所有菜单ID
-     */
-    List<String> queryAllMenuId(String userId);
+//    /**
+//     * 查询用户的所有菜单ID
+//     */
+//    List<String> queryAllMenuId(String userId);
 }

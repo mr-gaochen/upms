@@ -34,4 +34,8 @@ public interface SysMenuMapper extends CommonDao<SysMenu> {
      * 查询用户的权限列表
      */
     List<SysMenu> queryUserList(String userId);
+
+    List<SysMenu> queryAllMenuId(String userId);
+
+    List<SysMenu> selectAllList();
 }
