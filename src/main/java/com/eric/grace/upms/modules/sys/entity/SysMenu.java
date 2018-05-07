@@ -6,6 +6,8 @@ import com.eric.grace.dao.common.model.BaseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 /**
  * SysMenu: 系统菜单
  *
@@ -45,6 +47,10 @@ public class SysMenu extends BaseModel<SysMenu> {
     @ApiModelProperty(value = "权限标识符")
     @TableField("menu_perms")
     private String menuPerms;
+
+
+    @TableField(exist = false)
+    private List<?> list;
 
 
     public String getMenuName() {
@@ -101,5 +107,14 @@ public class SysMenu extends BaseModel<SysMenu> {
 
     public void setMenuPerms(String menuPerms) {
         this.menuPerms = menuPerms;
+    }
+
+
+    public List<?> getList() {
+        return list;
+    }
+
+    public void setList(List<?> list) {
+        this.list = list;
     }
 }

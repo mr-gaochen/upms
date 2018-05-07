@@ -44,6 +44,9 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
     @Autowired
     private ITokenService tokenService;
 
+    @Autowired
+    private SysUserMapper sysUserMapper;
+
 
     /**
      * 根据用户名查找账号
@@ -244,6 +247,17 @@ public class SysUserServiceImpl extends CommonServiceImpl<SysUserMapper, SysUser
         // 维护用户基本信息 部门信息
         super.updateById(sysUser);
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, sysUser);
+    }
+
+
+    /**
+     * 查询用户拥有的菜单ID
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<String> queryAllMenuId(String userId) {
+        return sysUserMapper.queryAllMenuId(userId);
     }
 
 

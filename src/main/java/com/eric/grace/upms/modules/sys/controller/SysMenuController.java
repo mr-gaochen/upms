@@ -5,6 +5,7 @@ import com.eric.grace.service.exception.enums.GraceExceptionEnum;
 import com.eric.grace.service.result.ResponseVo;
 import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.upms.modules.sys.entity.SysMenu;
+import com.eric.grace.upms.modules.sys.service.IShiroService;
 import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -24,10 +28,14 @@ import java.util.List;
 @RestController
 @RequestMapping("sys/menu/")
 @Api(value = "SysMenu操作类", description = "Menu相关操作接口定义类")
-public class SysMenuController {
+public class SysMenuController extends AbstractController{
 
     @Autowired
     private ISysMenuService sysMenuService;
+
+    @Autowired
+    private IShiroService shiroService;
+
 
 
 

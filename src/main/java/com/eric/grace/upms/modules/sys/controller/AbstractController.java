@@ -24,6 +24,9 @@ public abstract class AbstractController {
     }
 
 
+    protected String getDeptId() {
+        return getUser().getDeptId();
+    }
 
 
 }

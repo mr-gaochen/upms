@@ -12,7 +12,10 @@ import com.eric.grace.service.util.StringTools;
 import com.eric.grace.upms.modules.sys.controller.dto.RequestPassword;
 import com.eric.grace.upms.modules.sys.controller.dto.RequestUser;
 import com.eric.grace.upms.modules.sys.entity.SysDept;
+import com.eric.grace.upms.modules.sys.entity.SysMenu;
 import com.eric.grace.upms.modules.sys.entity.SysUser;
+import com.eric.grace.upms.modules.sys.service.IShiroService;
+import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import com.eric.grace.upms.modules.sys.service.ISysUserRoleService;
 import com.eric.grace.upms.modules.sys.service.ISysUserService;
 import com.eric.grace.utils.collection.CollUtil;
@@ -28,8 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * SysUserController: 系统用户类
@@ -50,6 +55,12 @@ public class SysUserController extends AbstractController {
 
     @Autowired
     private ISysUserService sysUserService;
+
+    @Autowired
+    private ISysMenuService sysMenuService;
+
+    @Autowired
+    private IShiroService shiroService;
 
 
     /**
@@ -203,9 +214,16 @@ public class SysUserController extends AbstractController {
      */
     @PostMapping("info")
     public ResponseVo getCurrent() {
-        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, getUser());
+        List<SysMenu> menuList = sysMenuService.getUserMenuList(getUserId());
+        Set<String> permissions = shiroService.getUserPermissions(getUserId());
+        Map<String,Object> map = new HashMap<>();
+        map.put("menuList", menuList);
+        map.put("permissions", permissions);
+        map.put("current",getUser());
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, map);
 
     }
+
 
 
     /**

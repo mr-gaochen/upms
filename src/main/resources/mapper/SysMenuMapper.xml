@@ -9,4 +9,26 @@
 		  from t_sys_menu m
     </select>
 
+
+
+    <!-- 查询用户的权限列表 -->
+    <select id="queryUserList" resultType="com.eric.grace.upms.modules.sys.entity.SysMenu">
+         select distinct m.*,(select p.menu_name from t_sys_menu p where p.id = m.parent_id) as parentName
+        from t_sys_user_role ur
+        LEFT JOIN t_sys_role_menu rm on ur.role_id = rm.role_id
+        LEFT JOIN t_sys_menu m on rm.menu_id = m.id
+        where ur.user_id = #{userId} order by m.menu_sort asc
+    </select>
+
+    <!-- 根据父ID获取 -->
+    <select id="queryListParentId" resultType="com.eric.grace.upms.modules.sys.entity.SysMenu">
+        select * from t_sys_menu where parent_id = #{parentId} order by menu_sort asc
+    </select>
+
+
+    <select id="queryNotButtonList" resultType="com.eric.grace.upms.modules.sys.entity.SysMenu">
+          select * from t_sys_menu where menu_type != 2 order by menu_sort asc
+    </select>
+
+
 </mapper>

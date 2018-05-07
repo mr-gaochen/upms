@@ -1,6 +1,5 @@
 package com.eric.grace.upms.modules.sys.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.eric.grace.dao.common.model.page.FrontPage;
 import com.eric.grace.dao.common.model.page.GracePage;
@@ -10,14 +9,11 @@ import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.service.util.StringTools;
 import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.common.utils.ValidatorUtils;
-import com.eric.grace.upms.modules.sys.entity.SysDept;
 import com.eric.grace.upms.modules.sys.entity.SysRole;
 import com.eric.grace.upms.modules.sys.service.*;
-import com.eric.grace.utils.collection.CollUtil;
 import com.eric.grace.utils.common.StrUtil;
 import io.swagger.annotations.Api;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +41,6 @@ public class SysRoleController extends AbstractController {
 
     @Autowired
     private ISysRoleDeptService sysRoleDeptService;
-
 
 
     /***
@@ -118,6 +113,11 @@ public class SysRoleController extends AbstractController {
     }
 
 
+    /**
+     * 验证角色编码是否占用
+     * @param roleCode
+     * @return
+     */
     @GetMapping("/info/codeExists")
     public ResponseVo<Boolean> findRoleByCode(String roleCode) {
         SysRole sysRole = sysRoleService.selectByRoleCode(roleCode);
@@ -131,7 +131,7 @@ public class SysRoleController extends AbstractController {
 
 
     /***
-     * 获取角色列表
+     * 获取角色列表 分页 + 条件查询
      * @author Mr.Eric
      * @date 2018/4/24 下午1:13
      * @param spage
@@ -180,20 +180,20 @@ public class SysRoleController extends AbstractController {
 
 
 
-//    /**
-//     * 角色列表
-//     */
-//    @RMapping("/select")
-//   // @RequiresPermissions("sys:role:select")
-//    public ResponseVo select(){
-//        Map<String, Object> map = new HashMap<>();
-//        //如果不是超级管理员，则只查询自己所拥有的角色列表
-//        if(getUserId() != SysConstant.SUPER_ADMIN){
-//            map.put("create_user_id", getUserId());
-//        }
-//        List<SysRole> list = sysRoleService.selectByMap(map);
-//        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,list);
-//    }
+    /**
+     * 获取角色列表 不分页
+     */
+    @PostMapping("/select")
+   // @RequiresPermissions("sys:role:select")
+    public ResponseVo select(){
+        Map<String, Object> map = new HashMap<>();
+        //如果不是超级管理员，则只查询自己所拥有的角色列表
+        if(getUserId() != SysConstant.SUPER_ADMIN){
+            map.put("create_user_id", getUserId());
+        }
+        List<SysRole> list = sysRoleService.selectByMap(map);
+        return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS,list);
+    }
 
 
 }

@@ -9,11 +9,13 @@ import com.eric.grace.upms.common.constant.SysConstant;
 import com.eric.grace.upms.modules.sys.entity.SysMenu;
 import com.eric.grace.upms.modules.sys.mapper.SysMenuMapper;
 import com.eric.grace.upms.modules.sys.service.ISysMenuService;
+import com.eric.grace.upms.modules.sys.service.ISysUserService;
 import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +27,13 @@ import java.util.List;
  */
 @Service
 public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
+
+
+    @Autowired
+    private ISysUserService sysUserService;
+
+    @Autowired
+    private SysMenuMapper sysMenuMapper;
 
 
     /**
@@ -84,6 +93,79 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
     }
 
 
+    /**
+     * 获取用户的菜单列表
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<SysMenu> getUserMenuList(String userId) {
+        //系统管理员，拥有最高权限
+        if (userId == SysConstant.SUPER_ADMIN) {
+            return getAllMenuList(null);
+        }
+
+        //用户菜单列表
+        List<String> menuIdList = sysUserService.queryAllMenuId(userId);
+        return getAllMenuList(menuIdList);
+    }
+
+
+    /**
+     * 获取所有菜单列表
+     */
+    private List<SysMenu> getAllMenuList(List<String> menuIdList) {
+        //查询根菜单列表
+        List<SysMenu> menuList = queryListParentId("-1", menuIdList);
+        //递归获取子菜单
+        getMenuTreeList(menuList, menuIdList);
+
+        return menuList;
+    }
+
+
+    public List<SysMenu> queryListParentId(String parentId, List<String> menuIdList) {
+        List<SysMenu> menuList = queryListParentId(parentId);
+        if (menuIdList == null) {
+            return menuList;
+        }
+
+        List<SysMenu> userMenuList = new ArrayList<>();
+        for (SysMenu menu : menuList) {
+            if (menuIdList.contains(menu.getId())) {
+                userMenuList.add(menu);
+            }
+        }
+        return userMenuList;
+    }
+
+
+    /**
+     * 递归
+     */
+    private List<SysMenu> getMenuTreeList(List<SysMenu> menuList, List<String> menuIdList) {
+        List<SysMenu> subMenuList = new ArrayList<SysMenu>();
+        for (SysMenu entity : menuList) {
+            if (entity.getMenuType() == SysConstant.MenuType.CATALOG.getValue()) {//目录
+                entity.setList(getMenuTreeList(queryListParentId(entity.getId(), menuIdList), menuIdList));
+            }
+            subMenuList.add(entity);
+        }
+        return subMenuList;
+    }
+
+
+    public List<SysMenu> queryListParentId(String parentId) {
+        return sysMenuMapper.queryListParentId(parentId);
+    }
+
+    @Override
+    public List<SysMenu> queryNotButtonList() {
+        return sysMenuMapper.queryNotButtonList();
+    }
+
+
     // 验证菜单
     public ResponseVo verifyForm(SysMenu menu) {
 
@@ -132,6 +214,7 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
 
         return null;
     }
+
 
 
 }

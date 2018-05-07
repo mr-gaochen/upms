@@ -4,6 +4,8 @@ import com.eric.grace.dao.common.service.ICommonService;
 import com.eric.grace.service.result.ResponseVo;
 import com.eric.grace.upms.modules.sys.entity.SysMenu;
 
+import java.util.List;
+
 /**
  * ISysMenuService: 系统菜单业务接口
  *
@@ -32,4 +34,32 @@ public interface ISysMenuService extends ICommonService<SysMenu> {
      * @return
      */
     ResponseVo deleteByMenuId(String menuId);
+
+    /**
+     * 获取用户菜单列表
+     */
+    List<SysMenu> getUserMenuList(String userId);
+
+
+    /**
+     * 根据父菜单，查询子菜单
+     * @param parentId 父菜单ID
+     * @param menuIdList  用户菜单ID
+     */
+    List<SysMenu> queryListParentId(String parentId, List<String> menuIdList);
+
+
+    /**
+     * 根据父菜单，查询子菜单
+     * @param parentId 父菜单ID
+     */
+    List<SysMenu> queryListParentId(String parentId);
+
+
+    /**
+     * 获取不包含按钮的菜单列表
+     */
+    List<SysMenu> queryNotButtonList();
+
+
 }

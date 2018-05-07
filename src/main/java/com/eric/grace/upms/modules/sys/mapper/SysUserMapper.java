@@ -46,4 +46,11 @@ public interface SysUserMapper extends CommonDao<SysUser> {
      * @return
      */
     List<SysUser> queryAll(Page<SysUser> page, @Param("params") Map<String, String> params);
+
+    /**
+     * 获取用户拥有的菜单ID
+     * @param userId
+     * @return
+     */
+    List<String> queryAllMenuId(String userId);
 }
