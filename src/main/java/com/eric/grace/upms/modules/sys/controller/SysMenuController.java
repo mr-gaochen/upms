@@ -39,7 +39,7 @@ public class SysMenuController extends AbstractController{
      * 所有菜单列表
      */
     @PostMapping("/list")
-   // @RequiresPermissions("sys:menu:list")
+    @RequiresPermissions("sys:menu:list")
     public ResponseVo list(){
         List<SysMenu> menuList = sysMenuService.selectList(new EntityWrapper<>());
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, menuList);
@@ -54,7 +54,7 @@ public class SysMenuController extends AbstractController{
      * @return R
      */
     @PostMapping("/save")
-   // @RequiresPermissions("sys:menu:save")
+    @RequiresPermissions("sys:menu:save")
     public ResponseVo save(@RequestBody SysMenu menu) {
         return sysMenuService.save(menu);
     }
@@ -70,7 +70,7 @@ public class SysMenuController extends AbstractController{
      * @return R
      */
     @PostMapping("/update")
-   // @RequiresPermissions("sys:menu:update")
+    @RequiresPermissions("sys:menu:update")
     public ResponseVo update(@RequestBody SysMenu menu){
         return sysMenuService.updateEntity(menu);
     }
@@ -82,7 +82,7 @@ public class SysMenuController extends AbstractController{
      * @return
      */
     @DeleteMapping("/delete")
- //   @RequiresPermissions("sys:menu:delete")
+    @RequiresPermissions("sys:menu:delete")
     public ResponseVo delete(String menuId){
         return sysMenuService.deleteByMenuId(menuId);
     }

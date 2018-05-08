@@ -14,6 +14,7 @@ import com.eric.grace.upms.modules.sys.service.*;
 import com.eric.grace.utils.common.StrUtil;
 import io.swagger.annotations.Api;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +52,7 @@ public class SysRoleController extends AbstractController {
      * @return com.eric.grace.service.result.ResponseVo
      */
     @PostMapping("/save")
-    //  @RequiresPermissions("sys:role:save")
+    @RequiresPermissions("sys:role:save")
     public ResponseVo save(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
         return sysRoleService.save(role, getUserId());
@@ -62,7 +63,7 @@ public class SysRoleController extends AbstractController {
      * 修改角色
      */
     @PostMapping("/update")
-    // @RequiresPermissions("sys:role:update")
+    @RequiresPermissions("sys:role:update")
     public ResponseVo update(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
         sysRoleService.update(role);
@@ -74,7 +75,7 @@ public class SysRoleController extends AbstractController {
      * 删除角色
      */
     @DeleteMapping("/delete/{ids}")
-    //@RequiresPermissions("sys:role:delete")
+    @RequiresPermissions("sys:role:delete")
     public ResponseVo delete(@PathVariable String ids) {
 
         if (StrUtil.isBlank(ids)) {
@@ -98,7 +99,7 @@ public class SysRoleController extends AbstractController {
      * @return com.eric.grace.service.result.ResponseVo
      */
     @GetMapping("/info/{roleId}")
-   // @RequiresPermissions("sys:role:info")
+    @RequiresPermissions("sys:role:info")
     public ResponseVo info(@PathVariable("roleId") String roleId) {
         SysRole role = sysRoleService.selectById(roleId);
         //查询角色对应的菜单
@@ -138,7 +139,7 @@ public class SysRoleController extends AbstractController {
      * @return com.eric.grace.service.result.ResponseVo
      */
     @PostMapping("/list")
-//    @RequiresPermissions("sys:role:list")
+    @RequiresPermissions("sys:role:list")
     public ResponseVo list(@RequestBody FrontPage<SysRole> spage) {
         Page<SysRole> page = new Page<SysRole>(spage.getCurentPage(), spage.getPageRowNum());
         if (null != spage.getSort()) {
@@ -184,7 +185,7 @@ public class SysRoleController extends AbstractController {
      * 获取角色列表 不分页
      */
     @PostMapping("/select")
-   // @RequiresPermissions("sys:role:select")
+    @RequiresPermissions("sys:role:select")
     public ResponseVo select(){
         Map<String, Object> map = new HashMap<>();
         //如果不是超级管理员，则只查询自己所拥有的角色列表

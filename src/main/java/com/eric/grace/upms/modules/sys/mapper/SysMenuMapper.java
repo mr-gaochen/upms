@@ -38,4 +38,10 @@ public interface SysMenuMapper extends CommonDao<SysMenu> {
     List<SysMenu> queryAllMenuId(String userId);
 
     List<SysMenu> selectAllList();
+
+    /**
+     * 根据菜单ID删除
+     * @param menuId
+     */
+    void deleteMenuById(String menuId);
 }

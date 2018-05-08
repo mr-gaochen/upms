@@ -1,7 +1,5 @@
 package com.eric.grace.upms.modules.sys.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.eric.grace.dao.common.model.page.FrontPage;
 import com.eric.grace.dao.common.model.page.GracePage;
@@ -9,18 +7,13 @@ import com.eric.grace.service.exception.enums.GraceExceptionEnum;
 import com.eric.grace.service.result.ResponseVo;
 import com.eric.grace.service.result.ResultUtil;
 import com.eric.grace.service.util.StringTools;
-import com.eric.grace.upms.modules.sys.controller.dto.RequestPassword;
-import com.eric.grace.upms.modules.sys.controller.dto.RequestUser;
-import com.eric.grace.upms.modules.sys.entity.SysDept;
 import com.eric.grace.upms.modules.sys.entity.SysMenu;
 import com.eric.grace.upms.modules.sys.entity.SysUser;
 import com.eric.grace.upms.modules.sys.service.IShiroService;
 import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import com.eric.grace.upms.modules.sys.service.ISysUserRoleService;
 import com.eric.grace.upms.modules.sys.service.ISysUserService;
-import com.eric.grace.utils.collection.CollUtil;
 import com.eric.grace.utils.common.ArrayUtil;
-import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;
 import io.swagger.annotations.Api;
 import org.apache.commons.collections.map.HashedMap;
@@ -70,7 +63,7 @@ public class SysUserController extends AbstractController {
      * @return
      */
     @PostMapping("add")
-    // @RequiresPermissions("sys:user:add")
+    @RequiresPermissions("sys:user:add")
     public ResponseVo createUser(@RequestBody SysUser sysUser) {
         return sysUserService.saveEntity(sysUser, getUserId());
     }
@@ -135,6 +128,7 @@ public class SysUserController extends AbstractController {
      * @return
      */
     @PostMapping(value = "update")
+    @RequiresPermissions("sys:user:update")
     public ResponseVo editUser(@RequestBody SysUser sysUser) {
        return sysUserService.updateUser(sysUser,getUserId());
     }
@@ -146,6 +140,7 @@ public class SysUserController extends AbstractController {
      * @return
      */
     @PostMapping(value = "resetPw")
+    @RequiresPermissions("sys:user:updatepw")
     public ResponseVo resetPw(@RequestBody String id) {
         return sysUserService.resetPassword(id);
     }
@@ -170,7 +165,7 @@ public class SysUserController extends AbstractController {
      * @return
      */
     @PostMapping("list")
-    // @RequiresPermissions("sys:user:list")
+    @RequiresPermissions("sys:user:list")
     public ResponseVo getAllUsersPages(@RequestBody FrontPage<SysUser> spage) {
         Page<SysUser> page = new Page<SysUser>(spage.getCurentPage(), spage.getPageRowNum());
         if (null != spage.getSort()) {
@@ -230,7 +225,7 @@ public class SysUserController extends AbstractController {
      * 删除用户
      */
     @DeleteMapping("/delete/{userIds}")
-    // @RequiresPermissions("sys:user:delete")
+    @RequiresPermissions("sys:user:delete")
     public ResponseVo delete(@PathVariable String userIds) {
 
         if (StrUtil.isBlank(userIds)) {

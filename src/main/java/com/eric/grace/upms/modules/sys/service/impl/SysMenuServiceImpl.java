@@ -13,8 +13,10 @@ import com.eric.grace.upms.modules.sys.service.ISysMenuService;
 import com.eric.grace.upms.modules.sys.service.ISysUserService;
 import com.eric.grace.utils.common.RandomUtil;
 import com.eric.grace.utils.common.StrUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -81,6 +83,7 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
      * @return
      */
     @Override
+    @Transactional
     public ResponseVo deleteByMenuId(String menuId) {
         //判断是否有子菜单或按钮
         EntityWrapper wrapper = new EntityWrapper();
@@ -89,7 +92,7 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
         if (menuList.size() > 0) {
             return ResultUtil.error(GraceExceptionEnum.BUSINESS_FAILE.getCode(), "请先删除子菜单或者目录");
         }
-        super.deleteById(menuId);
+        sysMenuMapper.deleteMenuById(menuId);
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS);
     }
 
@@ -106,13 +109,15 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
         List<SysMenu> menuList = null;
 
         //系统管理员，拥有最高权限
-        if (userId == SysConstant.SUPER_ADMIN) {
-            return sysMenuMapper.selectAllList();
+        if (userId.equals(SysConstant.SUPER_ADMIN)) {
+            menuList = sysMenuMapper.selectAllList();
+        } else {
+            //用户菜单列表
+            menuList = sysMenuMapper.queryAllMenuId(userId);
         }
-        //用户菜单列表
-        menuList = sysMenuMapper.queryAllMenuId(userId);
-        return  menuList;
-       // return getAllMenuList(menuIdList);
+
+        return menuList;
+        // return getAllMenuList(menuIdList);
     }
 
 
@@ -127,8 +132,6 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
 //
 //        return menuList;
 //    }
-
-
     public List<SysMenu> queryListParentId(String parentId, List<String> menuIdList) {
         List<SysMenu> menuList = queryListParentId(parentId);
         if (menuIdList == null) {
@@ -158,8 +161,6 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
 //        }
 //        return subMenuList;
 //    }
-
-
     public List<SysMenu> queryListParentId(String parentId) {
         return sysMenuMapper.queryListParentId(parentId);
     }
@@ -218,7 +219,6 @@ public class SysMenuServiceImpl extends CommonServiceImpl<SysMenuMapper, SysMenu
 
         return null;
     }
-
 
 
 }

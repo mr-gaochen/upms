@@ -32,7 +32,7 @@ public class SysDeptController extends AbstractController {
      * @return
      */
     @GetMapping("list")
-    // @RequiresPermissions("sys:dept:list")
+    @RequiresPermissions("sys:dept:list")
     public ResponseVo list() {
         List<SysDept> deptList = deptService.queryList();
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, deptList);
@@ -43,7 +43,7 @@ public class SysDeptController extends AbstractController {
      * 修改
      */
     @RequestMapping("/update")
-    // @RequiresPermissions("sys:dept:update")
+    @RequiresPermissions("sys:dept:update")
     public ResponseVo update(@RequestBody SysDept dept) {
 
         if (dept.getId().equals(dept.getParentId())){
@@ -59,7 +59,7 @@ public class SysDeptController extends AbstractController {
      * 保存
      */
     @RequestMapping("/save")
-    // @RequiresPermissions("sys:dept:save")
+    @RequiresPermissions("sys:dept:save")
     public ResponseVo save(@RequestBody SysDept dept) {
         return deptService.save(dept, getUserId());
 
@@ -70,7 +70,7 @@ public class SysDeptController extends AbstractController {
      * 删除
      */
     @DeleteMapping("/delete/{id}")
-    // @RequiresPermissions("sys:dept:delete")
+    @RequiresPermissions("sys:dept:delete")
     public ResponseVo delete(@PathVariable String id) {
         //判断是否有子部门
         List<String> deptList = deptService.queryDetpIdList(id);

@@ -43,9 +43,13 @@
 
 
     <select id="selectAllList" resultType="com.eric.grace.upms.modules.sys.entity.SysMenu">
-        SELECT * FROM t_sys_menu where menu_type IN  (0,1)
+        SELECT * FROM t_sys_menu where menu_type IN (0,1)
     </select>
 
+    <delete id="deleteMenuById">
+        DELETE FROM t_sys_menu where id = #{menuId};
+        DELETE FROM t_sys_role_menu where menu_id = #{menuId}
+    </delete>
 
 
 
