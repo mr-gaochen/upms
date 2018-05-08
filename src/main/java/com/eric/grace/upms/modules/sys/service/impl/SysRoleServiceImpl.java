@@ -24,10 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * SysRoleServiceImpl: 系统角色业务实现类
@@ -68,8 +65,15 @@ public class SysRoleServiceImpl extends CommonServiceImpl<SysRoleMapper, SysRole
         //保存角色与菜单关系
         sysRoleMenuService.saveOrUpdate(role.getId(), role.getMenuIdList());
 
+
+        //
+        List<String> list = new ArrayList<>();
+        list.add(role.getDeptId());
+
+
         //保存角色与部门关系
-        sysRoleDeptService.saveOrUpdate(role.getId(), role.getDeptIdList());
+        //sysRoleDeptService.saveOrUpdate(role.getId(), role.getDeptIdList());
+        sysRoleDeptService.saveOrUpdate(role.getId(), list);
 
         return ResultUtil.success(GraceExceptionEnum.BUSIONESS_SUCCESS, role);
     }
@@ -128,8 +132,11 @@ public class SysRoleServiceImpl extends CommonServiceImpl<SysRoleMapper, SysRole
         //更新角色与菜单关系
         sysRoleMenuService.saveOrUpdate(role.getId(), role.getMenuIdList());
 
+        List<String> list = new ArrayList<>();
+        list.add(role.getDeptId());
         //保存角色与部门关系
-        sysRoleDeptService.saveOrUpdate(role.getId(), role.getDeptIdList());
+        // sysRoleDeptService.saveOrUpdate(role.getId(), role.getDeptIdList());
+        sysRoleDeptService.saveOrUpdate(role.getId(), list);
     }
 
 
